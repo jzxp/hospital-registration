@@ -1,4 +1,4 @@
-package com.juzipi.common;
+package com.juzipi.commonutil;
 
 /**
  * @Author juzipi
