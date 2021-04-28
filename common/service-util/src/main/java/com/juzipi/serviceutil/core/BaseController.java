@@ -1,8 +1,10 @@
 package com.juzipi.serviceutil.core;
 
-import com.juzipi.commonutil.tools.Result;
-import com.juzipi.commonutil.tools.ResultTool;
-import com.juzipi.commonutil.utils.StringUtils;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.juzipi.commonutil.tool.PageTools;
+import com.juzipi.commonutil.tool.Result;
+import com.juzipi.commonutil.tool.ResultTools;
+import com.juzipi.commonutil.util.StringUtils;
 
 
 
@@ -19,8 +21,8 @@ public class BaseController {
      * @param data Object
      * @return Result
      */
-    protected Result JudgmentResult(Object data){
-        return StringUtils.isNotNull(data) ? ResultTool.successData(data) : ResultTool.fail();
+    protected Result judgmentResult(Object data){
+        return StringUtils.isNotNull(data) ? ResultTools.successData(data) : ResultTools.fail();
     }
 
 
@@ -29,8 +31,8 @@ public class BaseController {
      * @param aBoolean
      * @return
      */
-    protected Result BooleanResult(Boolean aBoolean){
-        return aBoolean ? ResultTool.success() : ResultTool.fail();
+    protected Result booleanResult(Boolean aBoolean){
+        return aBoolean ? ResultTools.success() : ResultTools.fail();
     }
 
 
@@ -40,8 +42,21 @@ public class BaseController {
      * @return
      */
     protected Result toResult(Integer rows){
-        return rows>0 ? ResultTool.success() : ResultTool.fail();
+        return rows > 0 ? ResultTools.success() : ResultTools.fail();
     }
 
 
+    /**
+     * 判断分页
+     * @param page
+     * @return
+     */
+    protected Result pageResult(Page<?> page){
+//        if (StringUtils.isNotEmpty(page.getRecords())){
+//            PageResult pageResult = PageTool.getPageResult(page);
+//            return ResultTool.successData(pageResult);
+//        }
+//        return ResultTool.fail();
+        return StringUtils.isNotEmpty(page.getRecords()) ? ResultTools.successData(PageTools.getPageResult(page)) : ResultTools.fail();
+    }
 }
