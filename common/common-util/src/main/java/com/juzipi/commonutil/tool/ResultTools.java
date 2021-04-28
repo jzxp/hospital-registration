@@ -1,4 +1,4 @@
-package com.juzipi.commonutil.tools;
+package com.juzipi.commonutil.tool;
 
 
 /**
@@ -6,7 +6,7 @@ package com.juzipi.commonutil.tools;
  * @Date 2021/4/27 19:33
  * @Info 结果集封装的方法
  */
-public class ResultTool {
+public class ResultTools {
 
 
     public static Result success(){

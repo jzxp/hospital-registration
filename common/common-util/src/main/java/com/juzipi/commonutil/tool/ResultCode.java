@@ -1,4 +1,4 @@
-package com.juzipi.commonutil.tools;
+package com.juzipi.commonutil.tool;
 
 
 

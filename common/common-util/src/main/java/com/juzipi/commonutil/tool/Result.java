@@ -1,6 +1,7 @@
-package com.juzipi.commonutil.tools;
+package com.juzipi.commonutil.tool;
 
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 /**
@@ -8,6 +9,7 @@ import lombok.Data;
  * @Date 2021/4/27 19:27
  * @Info Result 结果集
  */
+@ApiModel(value = "JSON结果实体类")
 @Data
 public class Result {
 

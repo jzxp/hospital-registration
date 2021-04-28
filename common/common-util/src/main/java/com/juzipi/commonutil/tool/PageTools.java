@@ -1,19 +1,20 @@
-package com.juzipi.commonutil.tools;
+package com.juzipi.commonutil.tool;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.juzipi.inter.model.mode.PageBody;
-import org.apache.poi.ss.formula.functions.T;
 
 /**
  * @Author juzipi
  * @Date 2021/4/27 20:29
  * @Info
  */
-public class PageTool {
+public class PageTools {
 
 
-
-
+    /**
+     * 获取分页结果集
+     * @param page
+     * @return
+     */
     public static PageResult getPageResult(Page<?> page){
         return new PageResult(page.getTotal(),page.getPages(),page.getRecords());
     }

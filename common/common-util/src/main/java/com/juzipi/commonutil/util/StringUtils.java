@@ -1,4 +1,4 @@
-package com.juzipi.commonutil.utils;
+package com.juzipi.commonutil.util;
 
 
 
