@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.juzipi.hospital.mapper.HospitalMapper">
-    <resultMap id="Hospital" type="com.juzipi.inter.model.pojo.Hospital">
+    <resultMap id="HospitalSet" type="com.juzipi.inter.model.pojo.HospitalSet">
         <id property="id" column="id"/>
 
         <result property="hpName" column="hp_name"/>

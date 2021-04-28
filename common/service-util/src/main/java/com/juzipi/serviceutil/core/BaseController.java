@@ -19,7 +19,7 @@ public class BaseController {
      * @param data Object
      * @return Result
      */
-    protected Result Judgment(Object data){
+    protected Result JudgmentResult(Object data){
         return StringUtils.isNotNull(data) ? ResultTool.successData(data) : ResultTool.fail();
     }
 
@@ -29,7 +29,7 @@ public class BaseController {
      * @param aBoolean
      * @return
      */
-    protected Result Judgement(Boolean aBoolean){
+    protected Result BooleanResult(Boolean aBoolean){
         return aBoolean ? ResultTool.success() : ResultTool.fail();
     }
 

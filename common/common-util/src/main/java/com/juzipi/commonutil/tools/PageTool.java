@@ -12,18 +12,12 @@ import org.apache.poi.ss.formula.functions.T;
 public class PageTool {
 
 
-    /**
-     * 获取分页
-     * @param entity 实体类
-     * @param pageBody 分页请求体
-     * @return page
-     */
-    public static Page getPage(T entity,PageBody pageBody){
-        return new Page<T>(pageBody.getPageNum(), pageBody.getPageSize());
-    }
+
 
     public static PageResult getPageResult(Page<?> page){
         return new PageResult(page.getTotal(),page.getPages(),page.getRecords());
     }
+
+
 
 }

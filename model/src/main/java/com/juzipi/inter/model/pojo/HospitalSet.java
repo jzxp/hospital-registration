@@ -16,8 +16,8 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("hospital")
-public class Hospital extends BaseEntity {
+@TableName("hospital_set")
+public class HospitalSet extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
 

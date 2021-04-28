@@ -1,9 +1,9 @@
 package com.juzipi.hospital.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.juzipi.hospital.mapper.HospitalMapper;
-import com.juzipi.hospital.service.HospitalService;
-import com.juzipi.inter.model.pojo.Hospital;
+import com.juzipi.hospital.mapper.HospitalSetMapper;
+import com.juzipi.hospital.service.HospitalSetService;
+import com.juzipi.inter.model.pojo.HospitalSet;
 import org.springframework.stereotype.Service;
 
 /**
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 //第一个参数是mapper，第二个是实体类，继承这个ServiceImpl它里面帮我们注入了mapper，所以就不用再注入mapper了
-public class HospitalServiceImpl extends ServiceImpl<HospitalMapper, Hospital> implements HospitalService {
+public class HospitalSetServiceImpl extends ServiceImpl<HospitalSetMapper, HospitalSet> implements HospitalSetService {
 
 
 
