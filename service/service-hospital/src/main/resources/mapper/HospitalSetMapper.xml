@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.juzipi.hospital.mapper.HospitalMapper">
+<mapper namespace="com.juzipi.hospital.mapper.HospitalSetMapper">
     <resultMap id="HospitalSet" type="com.juzipi.inter.model.pojo.HospitalSet">
         <id property="id" column="id"/>
 
@@ -23,6 +23,35 @@
     <sql id="queryHospitalTemplate">
         select * from hospital
     </sql>
+
+    <insert id="addHospitalSet" parameterType="com.juzipi.inter.model.pojo.HospitalSet">
+        insert into hospital_set(
+            id,
+--             这里加if下面不加的话会报错
+            <if test="hpName != null and hpName != ''">hp_name,</if>
+                    hp_code,
+                    api_url,
+                    sign_key,
+                    contact_name,
+                    contact_phone,
+                    status,
+                    create_time,
+                    update_time,
+                    deleted
+        ) values (
+            #{id},
+            <if test="hpName != null and hpName != ''">#{hpName},</if>
+                  #{hpCode},
+                  #{apiUrl},
+                  #{signKey},
+                  #{contactName},
+                  #{contactPhone},
+                  #{status},
+                  #{createTime},
+                  #{updateTime},
+                  #{deleted}
+        )
+    </insert>
 
 
 </mapper>

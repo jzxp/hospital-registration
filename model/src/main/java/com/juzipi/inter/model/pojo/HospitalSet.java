@@ -1,9 +1,8 @@
 package com.juzipi.inter.model.pojo;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 import com.juzipi.inter.model.base.BaseEntity;
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +12,7 @@ import lombok.NoArgsConstructor;
  * @Date 2021/4/27 11:10
  * @Info
  */
+@ApiModel(value = "医院设置实体类")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,13 +28,16 @@ public class HospitalSet extends BaseEntity {
 
     private String apiUrl;
 
+    //签名密钥,插入数据时随机生成
+    @TableField(fill = FieldFill.INSERT)
     private String signKey;
     //联系人
     private String contactName;
     //联系电话
     private String contactPhone;
 
-    //状态码
+    //状态码,1可以使用,0不能使用
+    @TableField(fill = FieldFill.INSERT)
     private Integer status;
 
 

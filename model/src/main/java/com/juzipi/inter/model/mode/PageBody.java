@@ -1,5 +1,6 @@
 package com.juzipi.inter.model.mode;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 /**
@@ -7,6 +8,7 @@ import lombok.Data;
  * @Date 2021/4/27 20:23
  * @Info
  */
+@ApiModel(value = "分页请求体")
 @Data
 public class PageBody {
 

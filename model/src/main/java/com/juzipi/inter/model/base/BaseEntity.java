@@ -1,6 +1,5 @@
 package com.juzipi.inter.model.base;
 
-import com.alibaba.fastjson.annotation.JSONType;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -28,15 +27,15 @@ public class BaseEntity implements Serializable {
     @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 
-//    @TableField(fill = FieldFill.INSERT)
+    @TableField(fill = FieldFill.INSERT)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
 
-//    @TableField(fill = FieldFill.INSERT_UPDATE)
+    @TableField(fill = FieldFill.INSERT_UPDATE)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updateTime;
 
-//    @TableField(fill = FieldFill.INSERT)
+
     private Integer deleted;
 
 

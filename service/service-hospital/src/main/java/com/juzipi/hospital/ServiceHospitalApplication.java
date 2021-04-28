@@ -12,6 +12,8 @@ import org.springframework.context.annotation.ComponentScan;
  */
 @SpringBootApplication
 @MapperScan("com.juzipi.hospital.mapper")
+//跨模块配置文件不生效,扫描所有包
+@ComponentScan("com.juzipi")
 public class ServiceHospitalApplication {
     public static void main(String[] args) {
         SpringApplication.run(ServiceHospitalApplication.class);
