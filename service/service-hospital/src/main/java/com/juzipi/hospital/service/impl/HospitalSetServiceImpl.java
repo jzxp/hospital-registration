@@ -43,7 +43,7 @@ public class HospitalSetServiceImpl extends ServiceImpl<HospitalSetMapper, Hospi
         Page<HospitalSet> hospitalSetPage = new Page<>(pageBody.getPageNum(), pageBody.getPageSize());
         LambdaQueryWrapper<HospitalSet> like =
                 new QueryWrapper<HospitalSet>().lambda().like(HospitalSet::getHpName, pageBody.getKey())
-                        .eq(HospitalSet::getHpCode,pageBody.getKey());
+                        .or().eq(HospitalSet::getHpCode,pageBody.getKey());
         return getBaseMapper().selectPage(hospitalSetPage, like);
     }
 

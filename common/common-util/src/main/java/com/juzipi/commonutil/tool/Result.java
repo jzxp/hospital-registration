@@ -2,6 +2,7 @@ package com.juzipi.commonutil.tool;
 
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -14,12 +15,16 @@ import lombok.Data;
 public class Result {
 
 
+    @ApiModelProperty(value = "标志，成功或失败")
     private Boolean flag;
 
+    @ApiModelProperty(value = "状态码")
     private Integer code;
 
+    @ApiModelProperty(value = "消息")
     private String message;
 
+    @ApiModelProperty(value = "数据")
     private Object data;
 
     //无返回值

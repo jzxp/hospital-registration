@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Api(tags = "医院管理")
 @RestController
-@RequestMapping("hospitalSet")
+@RequestMapping("admin/hospitalSet")
 public class HospitalSetController extends BaseController {
 
     @Autowired
@@ -71,8 +71,10 @@ public class HospitalSetController extends BaseController {
     }
 
 
+    @ApiOperation(value = "批量删除")
+    @DeleteMapping("delete/batch")
     public Result deleteByIds(@RequestBody List<Long> idList){
-
+        return booleanResult(hospitalSetService.removeByIds(idList));
     }
 
 }
