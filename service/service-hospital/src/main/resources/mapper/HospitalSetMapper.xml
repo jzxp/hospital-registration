@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.juzipi.hospital.mapper.HospitalSetMapper">
-    <resultMap id="HospitalSet" type="com.juzipi.inter.model.pojo.HospitalSet">
+    <resultMap id="HospitalSet" type="com.juzipi.inter.model.pojo.hospital.HospitalSet">
         <id property="id" column="id"/>
 
         <result property="hpName" column="hp_name"/>
@@ -24,7 +24,7 @@
         select * from hospital
     </sql>
 
-    <insert id="addHospitalSet" parameterType="com.juzipi.inter.model.pojo.HospitalSet">
+    <insert id="addHospitalSet" parameterType="com.juzipi.inter.model.pojo.hospital.HospitalSet">
         insert into hospital_set(
             id,
 --             这里加if下面不加的话会报错

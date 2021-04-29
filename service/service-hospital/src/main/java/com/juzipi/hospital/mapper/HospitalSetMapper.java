@@ -2,7 +2,7 @@ package com.juzipi.hospital.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.juzipi.inter.model.pojo.HospitalSet;
+import com.juzipi.inter.model.pojo.hospital.HospitalSet;
 import org.springframework.data.repository.query.Param;
 
 /**

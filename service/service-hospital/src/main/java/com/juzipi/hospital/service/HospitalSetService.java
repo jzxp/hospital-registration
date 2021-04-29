@@ -3,7 +3,7 @@ package com.juzipi.hospital.service;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.juzipi.inter.model.mode.PageBody;
-import com.juzipi.inter.model.pojo.HospitalSet;
+import com.juzipi.inter.model.pojo.hospital.HospitalSet;
 
 /**
  * @Author juzipi

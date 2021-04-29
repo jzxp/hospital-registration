@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.juzipi.hospital.mapper.HospitalSetMapper;
 import com.juzipi.hospital.service.HospitalSetService;
 import com.juzipi.inter.model.mode.PageBody;
-import com.juzipi.inter.model.pojo.HospitalSet;
+import com.juzipi.inter.model.pojo.hospital.HospitalSet;
 import org.springframework.stereotype.Service;
 
 /**
