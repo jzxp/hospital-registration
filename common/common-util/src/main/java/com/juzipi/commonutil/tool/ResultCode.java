@@ -46,8 +46,14 @@ public enum ResultCode {
     USER_PASSWORD_EXPIRED(411,"密码过期"),
     USER_PASSWORD_IS_BLANK(412,"密码为空"),
     USER_ACCOUNT_IS_REPEATED(413,"账号重复"),
-    USER_PASSWORD_CHANGE_CODE(414,"密码已重置为验证码，请尽快修改密码")
+    USER_PASSWORD_CHANGE_CODE(414,"密码已重置为验证码，请尽快修改密码"),
+
+
+    //服务器错误
+    ERROR(500,"服务器报错啦,这是错误信息")
+
     ;
+
 
     private final Integer code;
     private final String message;
