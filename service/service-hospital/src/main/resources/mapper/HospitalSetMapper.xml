@@ -53,6 +53,14 @@
         )
     </insert>
 
+    <update id="lockHospitalSet">
+        update hospital_set
+        <set>
+            <if test="status != null">status = #{status}</if>
+        </set>
+        where id = #{id}
+    </update>
+
 
 </mapper>
 

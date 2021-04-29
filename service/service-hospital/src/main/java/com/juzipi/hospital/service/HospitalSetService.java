@@ -30,6 +30,7 @@ public interface HospitalSetService extends IService<HospitalSet> {
      * @param pageBody
      * @return
      */
-    Page queryHospitalPage(PageBody pageBody);
+    Page<?> queryHospitalPage(PageBody pageBody);
 
+    Integer lockHospitalSet(Long id,Integer status);
 }

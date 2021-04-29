@@ -47,5 +47,10 @@ public class HospitalSetServiceImpl extends ServiceImpl<HospitalSetMapper, Hospi
         return getBaseMapper().selectPage(hospitalSetPage, like);
     }
 
+    @Override
+    public Integer lockHospitalSet(Long id,Integer status) {
+        return getBaseMapper().lockHospitalSet(id,status);
+    }
+
 
 }

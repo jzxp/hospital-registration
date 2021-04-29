@@ -27,6 +27,15 @@ public class BaseController {
 
 
     /**
+     * 判断多个字符串
+     * @param data
+     * @return
+     */
+    protected Result judgmentResult(String... data){
+        return StringUtils.isNotEmpty(data) ? ResultTools.successData(data) : ResultTools.fail();
+    }
+
+    /**
      * 判断布尔
      * @param aBoolean
      * @return

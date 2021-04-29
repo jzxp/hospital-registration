@@ -1,6 +1,9 @@
 package com.juzipi.hospital.controller;
 
+import com.juzipi.commonutil.constant.BaseConstant;
+import com.juzipi.commonutil.exception.BaseException;
 import com.juzipi.commonutil.tool.Result;
+import com.juzipi.commonutil.tool.ResultCode;
 import com.juzipi.hospital.service.HospitalSetService;
 import com.juzipi.inter.model.mode.PageBody;
 import com.juzipi.inter.model.pojo.HospitalSet;
@@ -30,6 +33,7 @@ public class HospitalSetController extends BaseController {
     @ApiOperation(value = "获取所有医院设置")
     @GetMapping("list")
     public Result selectHospitalSetList(){
+        int i = 1/0;
         return judgmentResult(hospitalSetService.list());
     }
 
@@ -37,6 +41,11 @@ public class HospitalSetController extends BaseController {
     @ApiOperation(value = "根据id查询医院设置")
     @GetMapping("get/{id}")
     public Result selectById(@PathVariable Long id){
+        try {
+            int i = 1/0;
+        } catch (Exception e) {
+            throw new BaseException(this.getClass().getName(), BaseConstant.Error, id,e.getMessage());
+        }
         return judgmentResult(hospitalSetService.getById(id));
     }
 
@@ -72,9 +81,24 @@ public class HospitalSetController extends BaseController {
 
 
     @ApiOperation(value = "批量删除")
-    @DeleteMapping("delete/batch")
+    @DeleteMapping("del/batch")
     public Result deleteByIds(@RequestBody List<Long> idList){
         return booleanResult(hospitalSetService.removeByIds(idList));
+    }
+
+
+    @ApiOperation(value = "医院设置锁定和解锁")
+    @PutMapping("lock/{id}/{status}")
+    public Result lockHospitalSet(@PathVariable Long id,@PathVariable Integer status){
+        return toResult(hospitalSetService.lockHospitalSet(id,status));
+    }
+
+
+    @ApiOperation(value = "发送签名密钥")
+    @PutMapping("sendKey/{id}")
+    public Result sendKey(@PathVariable Long id){
+        HospitalSet hospitalSet = hospitalSetService.getById(id);
+        return judgmentResult(hospitalSet.getHpCode(),hospitalSet.getSignKey());
     }
 
 }
