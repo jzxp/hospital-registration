@@ -1,4 +1,4 @@
-package com.juzipi.inter.model.pojo;
+package com.juzipi.inter.model.pojo.hospital;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.juzipi.inter.model.base.BaseEntity;
