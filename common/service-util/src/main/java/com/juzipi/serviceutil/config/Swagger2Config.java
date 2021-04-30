@@ -22,7 +22,7 @@ public class Swagger2Config {
     @Bean
     public Docket docket(){
         return new Docket(DocumentationType.OAS_30)
-                .host("localhost:7601")
+//                .host("localhost:7601")
                 .apiInfo(apiInfo()).enable(true)
                 .select()
                 //apis： 添加swagger接口提取范围

@@ -6,6 +6,7 @@ import com.juzipi.commonutil.tool.Result;
 import com.juzipi.commonutil.tool.ResultTools;
 import com.juzipi.commonutil.util.StringUtils;
 
+import java.util.Collection;
 
 
 /**
@@ -27,12 +28,22 @@ public class BaseController {
 
 
     /**
-     * 判断多个字符串
-     * @param data
+     * 判断数组
+     * @param listData
      * @return
      */
-    protected Result judgmentResult(String... data){
-        return StringUtils.isNotEmpty(data) ? ResultTools.successData(data) : ResultTools.fail();
+    protected Result judgmentResult(Collection<?> listData){
+        return StringUtils.isNotNull(listData) ? ResultTools.successData(listData) : ResultTools.fail();
+    }
+
+
+    /**
+     * 判断多个字符串
+     * @param stringData
+     * @return
+     */
+    protected Result judgmentResult(String... stringData){
+        return StringUtils.isNotEmpty(stringData) ? ResultTools.successData(stringData) : ResultTools.fail();
     }
 
     /**
