@@ -1,7 +1,9 @@
 package com.juzipi.dictionary;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 /**
  * @Author juzipi
@@ -9,6 +11,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @Info 数据字典模块启动类
  */
 @SpringBootApplication
+@ComponentScan(basePackages = "com.juzipi")
+@MapperScan(value = "com.juzipi.dictionary.mapper")
 public class ServiceDictionaryApplication {
 
     public static void main(String[] args) {

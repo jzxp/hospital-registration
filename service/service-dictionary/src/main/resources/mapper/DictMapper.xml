@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.juzipi.dictionary.mapper.DictMapper">
+    <resultMap id="Dict" type="com.juzipi.inter.model.pojo.dictionary.Dict">
+        <result property="id" column="id"/>
+        <result property="parentId" column="parent_id"/>
+        <result property="dictName" column="dict_name"/>
+        <result property="dictValue" column="dict_value"/>
+        <result property="dictCode" column="dict_code"/>
+
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="deleted" column="deleted"/>
+    </resultMap>
+
+    <sql id="baseSelect">
+        select * from data_dict
+    </sql>
+
+    <select id="queryChildDataById" parameterType="Long" resultType="com.juzipi.inter.model.pojo.dictionary.Dict">
+        <include refid="baseSelect"/>
+        where parent_id = id and deleted = 0
+    </select>
+    
+    <select id="isChildren" parameterType="long" resultType="int">
+        select COUNT(*) from data_dict where parent_id = #{dictId} and deleted = 0
+    </select>
+
+</mapper>
