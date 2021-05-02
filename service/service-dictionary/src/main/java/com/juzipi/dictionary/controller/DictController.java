@@ -8,10 +8,9 @@ import com.juzipi.serviceutil.core.BaseController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -41,6 +40,13 @@ public class DictController extends BaseController {
     @GetMapping("export")
     public void exportData(HttpServletResponse response){
         dictService.exportData(response);
+    }
+
+
+    @ApiOperation(value = "导入字典数据")
+    @PostMapping("import")
+    public Result importData(MultipartFile uploadFiles){
+        return judgmentResult(dictService.importData(uploadFiles));
     }
 
 

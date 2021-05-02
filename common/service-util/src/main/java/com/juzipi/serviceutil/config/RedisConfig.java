@@ -34,7 +34,7 @@ import java.time.Duration;
  * @author qy
  */
 @Configuration
-@EnableCaching
+@EnableCaching//开启缓存处理
 public class RedisConfig {
 
     /**
@@ -112,9 +112,8 @@ public class RedisConfig {
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer))
                 .disableCachingNullValues();
 
-        RedisCacheManager cacheManager = RedisCacheManager.builder(factory)
+        return RedisCacheManager.builder(factory)
                 .cacheDefaults(config)
                 .build();
-        return cacheManager;
     }
 }

@@ -2,6 +2,7 @@ package com.juzipi.dictionary.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.juzipi.inter.model.pojo.dictionary.Dict;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -30,5 +31,6 @@ public interface DictService extends IService<Dict> {
 
     void exportData(HttpServletResponse response);
 
-//    void exportData(HttpServletResponse response);
+    Boolean importData(MultipartFile uploadFiles);
+
 }

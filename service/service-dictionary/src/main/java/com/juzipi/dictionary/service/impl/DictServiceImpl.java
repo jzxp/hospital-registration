@@ -8,7 +8,12 @@ import com.juzipi.dictionary.mapper.DictMapper;
 import com.juzipi.dictionary.service.DictService;
 import com.juzipi.inter.model.pojo.dictionary.Dict;
 import com.juzipi.inter.vo.DictExcelVo;
+import com.juzipi.serviceutil.listener.DictListener;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -23,6 +28,10 @@ import java.util.List;
 public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements DictService {
 
 
+    @Autowired
+    private DictListener dictListener;
+
+
     @Override
     public String queryDictByCodeAndValue(String dictCode, String dictValue) {
         Dict dict = baseMapper.selectOne(new QueryWrapper<Dict>().lambda().eq(Dict::getDictCode, dictCode).or().eq(Dict::getDictValue, dictValue));
@@ -30,6 +39,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
 
     }
 
+    @Cacheable(value = "dict", keyGenerator = "keyGenerator")
     @Override
     public List<Dict> queryChildDataById(Long id) {
         List<Dict> dicts = baseMapper.selectList(new QueryWrapper<Dict>().lambda().eq(Dict::getParentId, id));
@@ -59,6 +69,19 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
         }
     }
 
+
+    //刷新缓存中的内容
+    @CacheEvict(value = "dict", allEntries = true)
+    @Override
+    public Boolean importData(MultipartFile uploadFiles) {
+        try {
+            EasyExcel.read(uploadFiles.getInputStream(), DictExcelVo.class, dictListener).sheet().doRead();
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new ExcelException("导入数据",this.getClass().getName(),e.getMessage());
+        }
+    }
 
 
     /**
