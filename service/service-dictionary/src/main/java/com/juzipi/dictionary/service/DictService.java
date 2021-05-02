@@ -28,5 +28,7 @@ public interface DictService extends IService<Dict> {
      */
     List<Dict> queryChildDataById(Long id);
 
+    void exportData(HttpServletResponse response);
+
 //    void exportData(HttpServletResponse response);
 }

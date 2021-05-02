@@ -2,6 +2,7 @@ package com.juzipi.dictionary.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.juzipi.inter.model.pojo.dictionary.Dict;
+import com.juzipi.inter.vo.DictExcelVo;
 
 import java.util.List;
 
@@ -25,4 +26,9 @@ public interface DictMapper extends BaseMapper<Dict> {
      * @return
      */
     Integer isChildren(Long dictId);
+
+    /**
+     * 查询出要导出到excel的部分数据
+     */
+    List<DictExcelVo> queryDictExcelVoList();
 }

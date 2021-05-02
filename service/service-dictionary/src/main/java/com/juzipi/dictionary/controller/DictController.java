@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 /**
  * @Author juzipi
@@ -38,12 +37,11 @@ public class DictController extends BaseController {
     }
 
 
-//    @ApiOperation(value = "导出")
-//    @GetMapping("export")
-//    public Result exportData(HttpServletResponse response){
-//        dictService.exportData(response);
-//    }
-
+    @ApiOperation(value = "导出数据字典")
+    @GetMapping("export")
+    public void exportData(HttpServletResponse response){
+        dictService.exportData(response);
+    }
 
 
 

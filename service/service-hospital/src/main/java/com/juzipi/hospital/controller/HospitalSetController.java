@@ -32,7 +32,6 @@ public class HospitalSetController extends BaseController {
     @ApiOperation(value = "获取所有医院设置")
     @GetMapping("list")
     public Result selectHospitalSetList(){
-        int i = 1/0;
         return judgmentResult(hospitalSetService.list());
     }
 

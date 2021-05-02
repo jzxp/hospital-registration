@@ -19,6 +19,11 @@ import java.util.LinkedHashMap;
 public class GlobalExceptionHandler {
 
 
+    /**
+     * 基础异常
+     * @param e
+     * @return
+     */
     @ExceptionHandler(BaseException.class)
     public Result customizeError(BaseException e){
         e.printStackTrace();
@@ -27,6 +32,22 @@ public class GlobalExceptionHandler {
         linkedHashMap.put("简略错误信息", e.getMessage());
         linkedHashMap.put("请求参数", e.getArgs());
         linkedHashMap.put("错误所在类", e.getModule());
+        return ResultTools.failCustomize(ResultCode.FAIL,linkedHashMap);
+    }
+
+
+    /**
+     * excel抛出异常
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(ExcelException.class)
+    public Result excelError(ExcelException e){
+        e.printStackTrace();
+        LinkedHashMap<Object, Object> linkedHashMap = new LinkedHashMap<>();
+        linkedHashMap.put("错误的操作:", e.getOption());
+        linkedHashMap.put("错误所在位置:", e.getModule());
+        linkedHashMap.put("简略的错误信息:", e.getMessage());
         return ResultTools.failCustomize(ResultCode.FAIL,linkedHashMap);
     }
 

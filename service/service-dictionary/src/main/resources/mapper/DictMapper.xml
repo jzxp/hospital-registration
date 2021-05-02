@@ -29,4 +29,9 @@
         select COUNT(*) from data_dict where parent_id = #{dictId} and deleted = 0
     </select>
 
+
+    <select id="queryDictExcelVoList" resultType="com.juzipi.inter.vo.DictExcelVo">
+        select d.id,d.parent_id,d.dict_name,d.dict_value,d.dict_code from data_dict d where deleted = 0;
+    </select>
+
 </mapper>
