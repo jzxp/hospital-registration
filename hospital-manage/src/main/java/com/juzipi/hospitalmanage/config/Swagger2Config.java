@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
+import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
@@ -19,29 +20,27 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 public class Swagger2Config {
 
     @Bean
-    public Docket webApiConfig(){
-
-        return new Docket(DocumentationType.SWAGGER_2)
-                .groupName("webApi")
-                .apiInfo(webApiInfo())
+    public Docket docket(){
+        return new Docket(DocumentationType.OAS_30)
+                .host("localhost:7603")
+                .apiInfo(apiInfo()).enable(true)
                 .select()
-                //过滤掉admin路径下的所有页面
-                .paths(PathSelectors.regex("/P2P/.*"))
-                //过滤掉所有error或error.*页面
-                //.paths(Predicates.not(PathSelectors.regex("/error.*")))
+                //apis： 添加swagger接口提取范围
+                .apis(RequestHandlerSelectors.basePackage("com.juzipi.hospitalmanage"))
+                //.apis(RequestHandlerSelectors.withMethodAnnotation(ApiOperation.class))
+                .paths(PathSelectors.any())
                 .build();
-
     }
 
-    private ApiInfo webApiInfo(){
-
+    private ApiInfo apiInfo(){
         return new ApiInfoBuilder()
-                .title("网站-API文档")
-                .description("本文档描述了网站微服务接口定义")
+                .title("医院接口")
+                .description("大家晚上好啊")
+                .contact(new Contact("作者", "作者URL", "作者Email"))
                 .version("1.0")
-                .contact(new Contact("qy", "http://atguigu.com", "55317332@qq.com"))
                 .build();
     }
 
 
 }
+

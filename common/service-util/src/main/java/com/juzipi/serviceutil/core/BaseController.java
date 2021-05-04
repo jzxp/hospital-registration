@@ -33,7 +33,7 @@ public class BaseController {
      * @return
      */
     protected Result judgmentResult(Collection<?> listData){
-        return StringUtils.isNotNull(listData) ? ResultTools.successData(listData) : ResultTools.fail();
+        return listData.size() > 0 ? ResultTools.successData(listData) : ResultTools.failData("是空的");
     }
 
 
@@ -77,6 +77,7 @@ public class BaseController {
 //            return ResultTool.successData(pageResult);
 //        }
 //        return ResultTool.fail();
-        return StringUtils.isNotEmpty(page.getRecords()) ? ResultTools.successData(PageTools.getPageResult(page)) : ResultTools.fail();
+        //如果不是空的
+        return page.getRecords().size() > 0 ? ResultTools.successData(PageTools.getPageResult(page)) : ResultTools.fail();
     }
 }
