@@ -14,7 +14,7 @@ public interface HospitalService {
      * @param map
      * @return
      */
-    Integer insertHospital(Map<String, Object> map);
+    Boolean insertHospital(Map<String, Object> map);
 
 
 

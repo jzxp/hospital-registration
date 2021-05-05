@@ -1,6 +1,6 @@
 package com.juzipi.hospital.controller;
 
-import com.juzipi.commonutil.constant.BaseConstant;
+import com.juzipi.commonutil.constant.BaseConstants;
 import com.juzipi.commonutil.exception.BaseException;
 import com.juzipi.commonutil.tool.Result;
 import com.juzipi.hospital.service.HospitalSetService;
@@ -42,7 +42,7 @@ public class HospitalSetController extends BaseController {
         try {
             int i = 1/0;
         } catch (Exception e) {
-            throw new BaseException(this.getClass().getName(), BaseConstant.Error, id,e.getMessage());
+            throw new BaseException(this.getClass().getName(), BaseConstants.Error, id,e.getMessage());
         }
         return judgmentResult(hospitalSetService.getById(id));
     }
