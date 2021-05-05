@@ -27,6 +27,7 @@ public class HospitalServiceImpl implements HospitalService {
 
     @Autowired
     private HospitalRepository hospitalRepository;
+
     @Autowired
     private HospitalSetMapper hospitalSetMapper;
 
@@ -37,23 +38,23 @@ public class HospitalServiceImpl implements HospitalService {
         String string = JSONObject.toJSONString(map);
         Hospital hospital = JSONObject.parseObject(string, Hospital.class);
 
-        //查询数据库的到的不为空表示已存在此数据就是更新
-        if (checkHospitalExists(hospital.getHpCode())){
-            //不为空就是更新
-            hospital.setStatus(hospital.getStatus());
-            hospital.setCreateTime(hospital.getCreateTime());
-            hospital.setUpdateTime(new Date());
-            hospital.setDeleted(hospital.getDeleted());
-            //重复添加会报错，这个新增更新的操作也不透明，看不到它干了什么
+        //查询数据库得到的为空表示不存在此数据就是新增，否则就是更新
+        //此处有问题，更新操作依然是新增
+        Hospital hospitalExists = checkHospitalExists(hospital.getHpCode());
+        if (StringUtils.isNull(hospitalExists)){
+            //为空就是新增
+            hospital.setCreateTime(new Date());
+            hospital.setStatus(ConstantsMp.STATUS_VALUE_MONGO);
+            hospital.setUpdateTime(hospital.getCreateTime());
+            hospital.setDeleted(ConstantsMp.DELETED_VALUE);
             return hospitalRepository.save(hospital);
         }
-        //为空就是新增
-        hospital.setCreateTime(new Date());
-        hospital.setStatus(ConstantsMp.STATUS_VALUE_MONGO);
-        hospital.setUpdateTime(hospital.getCreateTime());
-        hospital.setDeleted(ConstantsMp.DELETED_VALUE);
-        return hospitalRepository.save(hospital);
+        //不为空就是更新
+        hospitalExists.setUpdateTime(new Date());
+        //重复添加会报错，这个新增更新的操作也不透明，看不到它干了什么
+        return hospitalRepository.save(hospitalExists);
     }
+
 
 
     @Override
@@ -69,14 +70,23 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
 
+
+    @Override
+    public Hospital queryHospitalByHpCode(Object hospitalCode) {
+        return hospitalRepository.queryHospitalByHpCode(hospitalCode.toString());
+    }
+
+
+
+
+
     /**
      * 根据hpCode判断hospital是否存在
      * @param hpCode
      * @return 存在就是true，否则false
      */
-    private Boolean checkHospitalExists(String hpCode){
-        Hospital hospital = hospitalRepository.queryHospitalByHpCode(hpCode);
-        return StringUtils.isNotNull(hospital);
+    private Hospital checkHospitalExists(String hpCode){
+        return hospitalRepository.queryHospitalByHpCode(hpCode);
     }
 
 }

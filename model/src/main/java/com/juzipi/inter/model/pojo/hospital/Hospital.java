@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.juzipi.inter.model.base.BaseEntity;
+import com.juzipi.inter.model.base.BaseMongoEntity;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -19,12 +21,12 @@ import java.util.Date;
  * @Info  医院上传接口实体类，存入mongodb的，不能用mybatisplus了
  */
 @Data
+@ApiModel(value = "医院表")
 @Document(value = "hospital")
-public class Hospital {
+public class Hospital extends BaseMongoEntity {
 
     //mongodb的id只能是String类型了，它自动给你生成...
-    @TableId(type = IdType.ASSIGN_UUID)
-    private String id;
+
 
     @ApiModelProperty(value = "医院编码")
     @Indexed(unique = true)//唯一索引
@@ -61,14 +63,6 @@ public class Hospital {
     @ApiModelProperty(value = "状态码")
     private Integer status;
 
-    @TableField(fill = FieldFill.INSERT)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createTime;
 
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date updateTime;
-
-    private Integer deleted;
 
 }

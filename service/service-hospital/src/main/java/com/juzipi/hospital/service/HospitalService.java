@@ -19,5 +19,18 @@ public interface HospitalService {
     Hospital insertHospital(Map<String, Object> map);
 
 
+    /**
+     * 判断签名是否正确（一致）
+     * @param hospitalSign
+     * @param hospitalCode
+     * @return
+     */
     Boolean compareHospitalSign(Object hospitalSign, Object hospitalCode);
+
+    /**
+     * 根据医院编号查询医院
+     * @param hospitalCode
+     * @return
+     */
+    Hospital queryHospitalByHpCode(Object hospitalCode);
 }

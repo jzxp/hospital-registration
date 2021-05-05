@@ -5,8 +5,11 @@ import com.juzipi.commonutil.tool.PageTools;
 import com.juzipi.commonutil.tool.Result;
 import com.juzipi.commonutil.tool.ResultTools;
 import com.juzipi.commonutil.util.StringUtils;
+import com.juzipi.serviceutil.util.HttpRequestHelper;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Collection;
+import java.util.Map;
 
 
 /**
@@ -80,4 +83,8 @@ public class BaseController {
         //如果不是空的
         return page.getRecords().size() > 0 ? ResultTools.successData(PageTools.getPageResult(page)) : ResultTools.fail();
     }
+
+
+
+
 }
