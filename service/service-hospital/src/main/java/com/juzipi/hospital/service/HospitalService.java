@@ -1,5 +1,7 @@
 package com.juzipi.hospital.service;
 
+import com.juzipi.inter.model.pojo.hospital.Hospital;
+
 import java.util.Map;
 
 /**
@@ -14,8 +16,8 @@ public interface HospitalService {
      * @param map
      * @return
      */
-    Boolean insertHospital(Map<String, Object> map);
+    Hospital insertHospital(Map<String, Object> map);
 
 
-
+    Boolean compareHospitalSign(Object hospitalSign, Object hospitalCode);
 }
