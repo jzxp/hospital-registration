@@ -14,7 +14,7 @@
                             <label class="col-sm-2 control-label">医院code：</label>
 
                             <div class="col-sm-10">
-                                <input type="text" name="hoscode" id="hoscode" th:value="${hospitalSet.hoscode}" class="form-control"/>
+                                <input type="text" name="hpCode" id="hoscode" th:value="${hospitalSet.hpCode}" class="form-control"/>
                             </div>
                         </div>
                         <div class="hr-line-dashed"></div>
@@ -51,12 +51,12 @@
     $(function(){
         $('#ec').validate({
             rules:{
-                hoscode:"required",
+                hpCode:"required",
                 signKey:"required",
                 apiUrl:"required",
             },
             messages:{
-                hoscode:"必须输入",
+                hpCode:"必须输入",
                 signKey:"必须输入",
                 apiUrl:"必须输入"
             },

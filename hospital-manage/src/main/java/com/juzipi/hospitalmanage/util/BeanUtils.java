@@ -54,6 +54,7 @@ public class BeanUtils extends org.springframework.beans.BeanUtils {
                                 writeMethod.invoke(target, value);
                             }
                         }
+
                         catch (Throwable ex) {
                             throw new FatalBeanException(
                                     "Could not copy property '" + targetPd.getName() + "' from source to target", ex);

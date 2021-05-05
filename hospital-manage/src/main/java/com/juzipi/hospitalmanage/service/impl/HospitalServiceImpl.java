@@ -33,8 +33,8 @@ public class HospitalServiceImpl implements HospitalService {
     @Override
     public Map<String, Object> submitOrder(Map<String, Object> paramMap) {
         log.info(JSONObject.toJSONString(paramMap));
-        String hoscode = (String)paramMap.get("hoscode");
-        String depcode = (String)paramMap.get("depcode");
+        String hpCode = (String)paramMap.get("hpCode");
+        String depCode = (String)paramMap.get("depCode");
         String hosScheduleId = (String)paramMap.get("hosScheduleId");
         String reserveDate = (String)paramMap.get("reserveDate");
         String reserveTime = (String)paramMap.get("reserveTime");
@@ -45,8 +45,8 @@ public class HospitalServiceImpl implements HospitalService {
             throw new YyghException(ResultCodeEnum.DATA_ERROR);
         }
 
-        if(!schedule.getHoscode().equals(hoscode)
-                || !schedule.getDepcode().equals(depcode)
+        if(!schedule.getHpCode().equals(hpCode)
+                || !schedule.getDepCode().equals(depCode)
                 || !schedule.getAmount().toString().equals(amount)) {
             throw new YyghException(ResultCodeEnum.DATA_ERROR);
         }
@@ -99,7 +99,7 @@ public class HospitalServiceImpl implements HospitalService {
 
     @Override
     public void updatePayStatus(Map<String, Object> paramMap) {
-        String hoscode = (String)paramMap.get("hoscode");
+        String hpCode = (String)paramMap.get("hpCode");
         String hosRecordId = (String)paramMap.get("hosRecordId");
 
         OrderInfo orderInfo = orderInfoMapper.selectById(hosRecordId);
@@ -114,7 +114,7 @@ public class HospitalServiceImpl implements HospitalService {
 
     @Override
     public void updateCancelStatus(Map<String, Object> paramMap) {
-        String hoscode = (String)paramMap.get("hoscode");
+        String hpCode = (String)paramMap.get("hpCode");
         String hosRecordId = (String)paramMap.get("hosRecordId");
 
         OrderInfo orderInfo = orderInfoMapper.selectById(hosRecordId);

@@ -13,8 +13,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @MapperScan("com.juzipi.hospitalmanage.mapper")
 public class HospitalManageApplication {
 
-
-
     public static void main(String[] args) {
         SpringApplication.run(HospitalManageApplication.class);
     }
