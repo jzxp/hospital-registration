@@ -30,7 +30,7 @@ public class BaseEntity implements Serializable {
     @ApiModelProperty(value = "逻辑删除(1:已删除，0:未删除)")
     @TableLogic
     @TableField("is_deleted")
-    private Integer isDeleted;
+    private Integer deleted;
 
     @ApiModelProperty(value = "其他参数")
     @TableField(exist = false)
