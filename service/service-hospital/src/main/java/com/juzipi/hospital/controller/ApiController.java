@@ -7,6 +7,7 @@ import com.juzipi.commonutil.tool.ResultTools;
 import com.juzipi.commonutil.util.StringUtils;
 import com.juzipi.hospital.service.DepartmentService;
 import com.juzipi.hospital.service.HospitalService;
+import com.juzipi.hospital.service.ScheduleService;
 import com.juzipi.inter.model.mode.PageBody;
 import com.juzipi.inter.model.pojo.hospital.Hospital;
 import com.juzipi.inter.vo.DepartmentSelectVo;
@@ -39,6 +40,8 @@ public class ApiController extends BaseController {
     private HospitalService hospitalService;
     @Autowired
     private DepartmentService departmentService;
+    @Autowired
+    private ScheduleService scheduleService;
 
 
 
@@ -81,7 +84,6 @@ public class ApiController extends BaseController {
     public Result insertDepartment(HttpServletRequest request){
         //获取参数，再通过工具类把String[]数组转换为Object类型
         Map<String, Object> map = getParameterMap(request);
-
         if (checkSign(map)){
             return judgmentResult(departmentService.insertDepartment(map));
         }
@@ -96,20 +98,37 @@ public class ApiController extends BaseController {
         Integer pageNum = Integer.parseInt(parameterMap.get(ManageConstants.PAGE).toString());
         Integer pageSize = Integer.parseInt(parameterMap.get(ManageConstants.LIMIT).toString());
         //也就是pageNum和pageSize,把操作放到service
-        if (checkSign(parameterMap)){
-            return pageResult(departmentService.queryPageDepartment(pageNum, pageSize));
-        }
-        return ResultTools.failData("签名不对哦");
+//        if (checkSign(parameterMap)){
+        return pageResult(departmentService.queryPageDepartment(pageNum, pageSize));
+//        }
+//        return ResultTools.failData("签名不对哦");
     }
 
 
-
+    /**
+     * 根据id删除科室
+     * @param request
+     * @return
+     */
     @DeleteMapping("department/remove")
     public Result deleteDepartment(HttpServletRequest request){
         Map<String, Object> parameterMap = getParameterMap(request);
         String hoCode = parameterMap.get(ManageConstants.HP_CODE).toString();
         String depCode = parameterMap.get(ManageConstants.DEP_CODE).toString();
         return toResult(departmentService.removeDepartment(hoCode, depCode));
+    }
+
+
+
+    @PostMapping("saveSchedule")
+    public Result insertSchedule(HttpServletRequest request){
+        Map<String, Object> parameterMap = getParameterMap(request);
+        if (checkSign(parameterMap)){
+            scheduleService.insertSchedule(parameterMap);
+        }
+
+
+
     }
 
 

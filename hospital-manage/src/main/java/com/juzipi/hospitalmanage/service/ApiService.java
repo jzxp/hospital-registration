@@ -19,7 +19,7 @@ public interface ApiService {
 
     boolean saveDepartment(String data);
 
-    boolean removeDepartment(String depcode);
+    boolean removeDepartment(String depCode);
 
     Map<String, Object> findSchedule(int pageNum, int pageSize);
 

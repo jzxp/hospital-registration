@@ -23,9 +23,20 @@ public interface DepartmentService {
      */
     Department insertDepartment(Map<String, Object> map);
 
-
+    /**
+     * 查询科室分页结果集
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     PageInfo queryPageDepartment(Integer pageNum, Integer pageSize);
 
+    /**
+     * 根据医院编码和科室编码删除科室
+     * @param hoCode
+     * @param depCode
+     * @return
+     */
     Integer removeDepartment(String hoCode, String depCode);
 
 }

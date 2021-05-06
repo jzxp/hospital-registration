@@ -170,10 +170,10 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
-    public boolean removeDepartment(String depcode) {
+    public boolean removeDepartment(String depCode) {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("hpCode",this.getHpCode());
-        paramMap.put("depCode",depcode);
+        paramMap.put("depCode",depCode);
         paramMap.put("timestamp", HttpRequestHelper.getTimestamp());
         paramMap.put("sign", HttpRequestHelper.getSign(paramMap, this.getSignKey()));
         JSONObject respone = HttpRequestHelper.sendRequest(paramMap,this.getApiUrl()+"/api/hosp/department/remove");

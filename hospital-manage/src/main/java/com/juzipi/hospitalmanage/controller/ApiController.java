@@ -177,9 +177,9 @@ public class ApiController extends BaseController {
 		return this.successPage(null,request);
 	}
 
-	@RequestMapping(value="/department/remove/{depcode}",method=RequestMethod.GET)
-	public String removeDepartment(ModelMap model, @PathVariable String depcode, RedirectAttributes redirectAttributes) {
-		apiService.removeDepartment(depcode);
+	@RequestMapping(value="/department/remove/{depCode}",method=RequestMethod.GET)
+	public String removeDepartment(ModelMap model, @PathVariable String depCode, RedirectAttributes redirectAttributes) {
+		apiService.removeDepartment(depCode);
 
 		this.successMessage(null, redirectAttributes);
 		return "redirect:/department/list";

@@ -1,21 +1,16 @@
 package com.juzipi.hospital.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.juzipi.commonutil.constant.BaseConstants;
 import com.juzipi.commonutil.constant.ConstantsMp;
-import com.juzipi.commonutil.constant.ManageConstants;
-import com.juzipi.commonutil.tool.PageResult;
-import com.juzipi.commonutil.tool.PageTools;
 import com.juzipi.commonutil.util.StringUtils;
+import com.juzipi.hospital.mapper.HospitalSetMapper;
 import com.juzipi.hospital.repository.DepartmentRepository;
 import com.juzipi.hospital.service.DepartmentService;
-import com.juzipi.inter.model.base.BaseMongoEntity;
 import com.juzipi.inter.model.pojo.hospital.Department;
-import com.juzipi.inter.model.pojo.hospital.Hospital;
-import com.juzipi.inter.vo.DepartmentSelectVo;
+import com.juzipi.inter.model.pojo.hospital.HospitalSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +29,8 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Autowired
     private DepartmentRepository departmentRepository;
+    @Autowired
+    private HospitalSetMapper hospitalSetMapper;
 
 
     @Override
@@ -57,6 +54,10 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public PageInfo queryPageDepartment(Integer pageNum, Integer pageSize) {
+        if (pageNum == 0 && pageSize == 0){
+            pageNum=1;
+            pageSize=10;
+        }
         PageHelper.startPage(pageNum, pageSize);
         //没看懂他这里为什么要用一个departmentVo类，舍弃了
         //好吧，可能是查询用的，mongoRepository查询分页需要一个实体类吧，改造成用pageHelper更好更简单
@@ -70,6 +71,8 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Integer removeDepartment(String hpCode, String depCode) {
         return departmentRepository.removeByHpCodeAndDepCode(hpCode, depCode);
     }
+
+
 
 
     /**
