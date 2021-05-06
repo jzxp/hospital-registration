@@ -1,6 +1,7 @@
 package com.juzipi.serviceutil.core;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.pagehelper.PageInfo;
 import com.juzipi.commonutil.tool.PageTools;
 import com.juzipi.commonutil.tool.Result;
 import com.juzipi.commonutil.tool.ResultTools;
@@ -83,6 +84,24 @@ public class BaseController {
         //如果不是空的
         return page.getRecords().size() > 0 ? ResultTools.successData(PageTools.getPageResult(page)) : ResultTools.fail();
     }
+
+
+    /**
+     * 判断分页，pagehelper版
+     * @param pageInfo
+     * @return
+     */
+    protected Result pageResult(PageInfo<?> pageInfo){
+//        if (StringUtils.isNotEmpty(page.getRecords())){
+//            PageResult pageResult = PageTool.getPageResult(page);
+//            return ResultTool.successData(pageResult);
+//        }
+//        return ResultTool.fail();
+        //如果不是空的
+        return pageInfo.getList().size() > 0 ? ResultTools.successData(PageTools.getPageResult(pageInfo)) : ResultTools.fail();
+    }
+
+
 
 
 

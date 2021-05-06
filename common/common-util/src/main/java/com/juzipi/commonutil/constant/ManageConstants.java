@@ -17,6 +17,12 @@ public class ManageConstants {
 
     public static final String LOGO_DATA = "logoData";//logo
 
+    public static final String PAGE = "page";//
+
+    public static final String LIMIT = "limit";
+
+    public static final String DEP_CODE = "depCode";
+
 
     /**
      * department表

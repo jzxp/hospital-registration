@@ -34,6 +34,14 @@
             <artifactId>common-util</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+
+
+<!--        醉了，突然就找不到依赖了-->
+        <dependency>
+            <groupId>org.apache.ibatis</groupId>
+            <artifactId>ibatis-core</artifactId>
+            <version>3.0</version>
+        </dependency>
     </dependencies>
 
 </project>

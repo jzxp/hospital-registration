@@ -1,19 +1,26 @@
 package com.juzipi.hospital.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.juzipi.commonutil.constant.BaseConstants;
 import com.juzipi.commonutil.constant.ConstantsMp;
 import com.juzipi.commonutil.constant.ManageConstants;
+import com.juzipi.commonutil.tool.PageResult;
+import com.juzipi.commonutil.tool.PageTools;
 import com.juzipi.commonutil.util.StringUtils;
 import com.juzipi.hospital.repository.DepartmentRepository;
 import com.juzipi.hospital.service.DepartmentService;
 import com.juzipi.inter.model.base.BaseMongoEntity;
 import com.juzipi.inter.model.pojo.hospital.Department;
 import com.juzipi.inter.model.pojo.hospital.Hospital;
+import com.juzipi.inter.vo.DepartmentSelectVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,6 +51,24 @@ public class DepartmentServiceImpl implements DepartmentService {
         department.setUpdateTime(department.getCreateTime());
         department.setDeleted(ConstantsMp.DELETED_VALUE);
         return departmentRepository.save(department);
+    }
+
+
+
+    @Override
+    public PageInfo queryPageDepartment(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        //没看懂他这里为什么要用一个departmentVo类，舍弃了
+        //好吧，可能是查询用的，mongoRepository查询分页需要一个实体类吧，改造成用pageHelper更好更简单
+        List<Department> departments = departmentRepository.findAll();
+        return new PageInfo<>(departments);
+    }
+
+
+
+    @Override
+    public Integer removeDepartment(String hpCode, String depCode) {
+        return departmentRepository.removeByHpCodeAndDepCode(hpCode, depCode);
     }
 
 

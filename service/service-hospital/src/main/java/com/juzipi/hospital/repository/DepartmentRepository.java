@@ -1,7 +1,10 @@
 package com.juzipi.hospital.repository;
 
 import com.juzipi.inter.model.pojo.hospital.Department;
+import com.juzipi.inter.vo.DepartmentSelectVo;
 import org.springframework.data.mongodb.repository.MongoRepository;
+
+import java.util.List;
 
 /**
  * @Author juzipi
@@ -12,4 +15,5 @@ public interface DepartmentRepository extends MongoRepository<Department, String
 
     Department queryDepartmentByHpCodeAndDepCode(String hpCode, String depCode);
 
+    Integer removeByHpCodeAndDepCode(String hpCode, String depCode);
 }

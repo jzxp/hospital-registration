@@ -28,14 +28,13 @@ public class Department extends BaseMongoEntity {
     @ApiModelProperty(value = "科室名称")
     private String depName;
 
-    @ApiModelProperty(value = "科室描述")
-    private String introduction;
-
     @ApiModelProperty(value = "大科室编号")
     private String bigCode;
 
     @ApiModelProperty(value = "大科室名称")
     private String bigName;
 
+    @ApiModelProperty(value = "科室描述")
+    private String introduction;
 
 }
