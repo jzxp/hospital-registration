@@ -20,10 +20,16 @@ import java.util.Date;
 @Document("schedule")
 public class Schedule extends BaseMongoEntity {
 
+    @ApiModelProperty(value = "排班编号")
+    @Indexed
+    private String hpScheduleId;
+
     @ApiModelProperty(value = "医院编号")
+    @Indexed
     private String hpCode;
 
-    @ApiModelProperty(value = "排班编号")
+    @ApiModelProperty(value = "科室编号")
+    @Indexed
     private String depCode;
 
     @ApiModelProperty(value = "职称")
@@ -51,9 +57,7 @@ public class Schedule extends BaseMongoEntity {
     @ApiModelProperty(value = "排班状态（-1：停诊，0:停约，1：可约）")
     private Integer status;
 
-    @ApiModelProperty(value = "排班编号")
-    @Indexed
-    private String hpScheduleId;
+
 
 
 }

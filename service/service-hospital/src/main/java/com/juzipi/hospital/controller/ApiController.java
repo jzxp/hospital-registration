@@ -1,11 +1,12 @@
 package com.juzipi.hospital.controller;
 
-import com.juzipi.commonutil.constant.ManageConstants;
+import com.juzipi.commonutil.constant.MongoConstants;
 import com.juzipi.commonutil.tool.Result;
 import com.juzipi.commonutil.tool.ResultTools;
 import com.juzipi.hospital.service.DepartmentService;
 import com.juzipi.hospital.service.HospitalService;
 import com.juzipi.hospital.service.ScheduleService;
+import com.juzipi.inter.model.pojo.hospital.Hospital;
 import com.juzipi.serviceutil.core.BaseController;
 import com.juzipi.serviceutil.util.HttpRequestHelper;
 import io.swagger.annotations.Api;
@@ -45,7 +46,7 @@ public class ApiController extends BaseController {
     public Result insertHospital(HttpServletRequest request){
         //获取参数，再通过工具类把String[]数组转换为Object类型
         Map<String, Object> map = getParameterMap(request);
-        Object hospitalLogoData = map.get(ManageConstants.LOGO_DATA);
+        Object hospitalLogoData = map.get(MongoConstants.LOGO_DATA);
         //说什么base编码后会将 + 转换为 空格，这里是给它再转换还回去
         String logoData = hospitalLogoData.toString().replace(" ", "+");
         map.put("logoData", logoData);
@@ -61,16 +62,14 @@ public class ApiController extends BaseController {
     @PostMapping("hospital/show")
     public Result getHospital(HttpServletRequest request){
         Map<String, Object> map = getParameterMap(request);
-        Object hospitalCode = map.get(ManageConstants.HP_CODE);
+        Object hospitalCode = map.get(MongoConstants.HP_CODE);
         //同样的验证签名是否一致
         if (checkSign(map)) {
-            return judgmentResult(hospitalService.queryHospitalByHpCode(hospitalCode));
+            Hospital hospital = hospitalService.queryHospitalByHpCode(hospitalCode);
+            return judgmentResult(hospital);
         }
         return ResultTools.failData("签名不一致");
     }
-
-
-
 
 
 
@@ -86,31 +85,39 @@ public class ApiController extends BaseController {
     }
 
 
+    /**
+     * 查询科室
+     * @param request
+     * @return
+     */
     @PostMapping("department/list")
     public Result getDepartment(HttpServletRequest request){
         Map<String, Object> parameterMap = getParameterMap(request);
         //输入page值为空就赋给它一个默认值，不为空就获取page值
-        Integer pageNum = Integer.parseInt(parameterMap.get(ManageConstants.PAGE).toString());
-        Integer pageSize = Integer.parseInt(parameterMap.get(ManageConstants.LIMIT).toString());
+        Integer pageNum = Integer.parseInt(parameterMap.get(MongoConstants.PAGE).toString());
+        Integer pageSize = Integer.parseInt(parameterMap.get(MongoConstants.LIMIT).toString());
+        String hpCode = parameterMap.get(MongoConstants.HP_CODE).toString();
         //也就是pageNum和pageSize,把操作放到service
-//        if (checkSign(parameterMap)){
-        return pageResult(departmentService.queryPageDepartment(pageNum, pageSize));
-//        }
-//        return ResultTools.failData("签名不对哦");
+        /*
+        他的加密逻辑是这样的，有问题，应该只加密23ce3b89e0a80072a57a4977582610dd这个数据就行了，有时间了研究研究改改
+        加密前：100|10|1|1620374817541|23ce3b89e0a80072a57a4977582610dd
+        加密后：80823b1961b7e5204969e8754255feda
+         */
+        return judgmentResult(departmentService.queryPageDepartment(pageNum, pageSize, hpCode));
     }
 
 
     /**
-     * 根据id删除科室
+     * 删除科室
      * @param request
      * @return
      */
     @ApiOperation(value = "根据id删除科室")
-    @DeleteMapping("department/remove")
+    @PostMapping("department/remove")
     public Result deleteDepartment(HttpServletRequest request){
         Map<String, Object> parameterMap = getParameterMap(request);
-        String hoCode = parameterMap.get(ManageConstants.HP_CODE).toString();
-        String depCode = parameterMap.get(ManageConstants.DEP_CODE).toString();
+        String hoCode = parameterMap.get(MongoConstants.HP_CODE).toString();
+        String depCode = parameterMap.get(MongoConstants.DEP_CODE).toString();
         return toResult(departmentService.removeDepartment(hoCode, depCode));
     }
 
@@ -132,12 +139,32 @@ public class ApiController extends BaseController {
 
 
 
-//    @ApiOperation(value = "根据id查询排班")
-//    @PostMapping("schedule/list")
-//    public Result getSchedule(HttpServletRequest request){
-//        Map<String, Object> parameterMap = getParameterMap(request);
-//
-//    }
+    @ApiOperation(value = "查询排班")
+    @PostMapping("schedule/list")
+    public Result getSchedule(HttpServletRequest request){
+        //跟科室一样的操作
+        Map<String, Object> parameterMap = getParameterMap(request);
+        Integer pageNum = Integer.parseInt(parameterMap.get(MongoConstants.PAGE).toString());
+        Integer pageSize = Integer.parseInt(parameterMap.get(MongoConstants.LIMIT).toString());
+        String hpCode = parameterMap.get(MongoConstants.HP_CODE).toString();
+        return judgmentResult(scheduleService.queryPageSchedule(pageNum, pageSize, hpCode));
+    }
+
+
+    @PostMapping("schedule/remove")
+    public Result deleteSchedule(HttpServletRequest request){
+        Map<String, Object> parameterMap = getParameterMap(request);
+        String hpCode = parameterMap.get(MongoConstants.HP_CODE).toString();
+        String hpScheduleId = parameterMap.get(MongoConstants.HP_SCHEDULE_ID).toString();
+        return toResult(scheduleService.removeSchedule(hpCode, hpScheduleId));
+    }
+
+
+
+
+
+
+
 
 
 
@@ -168,9 +195,11 @@ public class ApiController extends BaseController {
      * @return
      */
     private Boolean checkSign(Map<String, Object> parameterMap) {
-        Object hospitalSign = parameterMap.get(ManageConstants.SIGN);
-        Object hospitalCode = parameterMap.get(ManageConstants.HP_CODE);
+        Object hospitalSign = parameterMap.get(MongoConstants.SIGN);
+        Object hospitalCode = parameterMap.get(MongoConstants.HP_CODE);
         return hospitalService.compareHospitalSign(hospitalSign, hospitalCode);
     }
 
 }
+
+

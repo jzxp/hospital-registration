@@ -33,7 +33,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr class="gradeX" th:each="item,it : ${data.records}">
+                            <tr class="gradeX" th:each="item,it : ${list}">
                                 <td th:text="${it.count}">11</td>
                                 <td th:text="${item.hpCode}">22</td>
                                 <td th:text="${item.depCode}">33</td>

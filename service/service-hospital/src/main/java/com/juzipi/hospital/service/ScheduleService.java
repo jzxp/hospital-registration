@@ -1,6 +1,7 @@
 package com.juzipi.hospital.service;
 
 import com.juzipi.inter.model.pojo.hospital.Schedule;
+import org.springframework.data.domain.Page;
 
 import java.util.Map;
 
@@ -13,5 +14,11 @@ public interface ScheduleService {
 
 
     Schedule insertSchedule(Map<String, Object> parameterMap);
+
+
+    Page<Schedule> queryPageSchedule(Integer pageNum, Integer pageSize, String hpCode);
+
+
+    Integer removeSchedule(String hpCode, String hpScheduleId);
 
 }
