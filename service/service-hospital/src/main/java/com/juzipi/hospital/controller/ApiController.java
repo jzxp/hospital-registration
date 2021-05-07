@@ -1,16 +1,11 @@
 package com.juzipi.hospital.controller;
 
 import com.juzipi.commonutil.constant.ManageConstants;
-import com.juzipi.commonutil.tool.PageResult;
 import com.juzipi.commonutil.tool.Result;
 import com.juzipi.commonutil.tool.ResultTools;
-import com.juzipi.commonutil.util.StringUtils;
 import com.juzipi.hospital.service.DepartmentService;
 import com.juzipi.hospital.service.HospitalService;
 import com.juzipi.hospital.service.ScheduleService;
-import com.juzipi.inter.model.mode.PageBody;
-import com.juzipi.inter.model.pojo.hospital.Hospital;
-import com.juzipi.inter.vo.DepartmentSelectVo;
 import com.juzipi.serviceutil.core.BaseController;
 import com.juzipi.serviceutil.util.HttpRequestHelper;
 import io.swagger.annotations.Api;
@@ -110,6 +105,7 @@ public class ApiController extends BaseController {
      * @param request
      * @return
      */
+    @ApiOperation(value = "根据id删除科室")
     @DeleteMapping("department/remove")
     public Result deleteDepartment(HttpServletRequest request){
         Map<String, Object> parameterMap = getParameterMap(request);
@@ -119,17 +115,35 @@ public class ApiController extends BaseController {
     }
 
 
-
+    /**
+     * 上传排班
+     * @param request
+     * @return
+     */
+    @ApiOperation(value = "上传排班")
     @PostMapping("saveSchedule")
     public Result insertSchedule(HttpServletRequest request){
         Map<String, Object> parameterMap = getParameterMap(request);
         if (checkSign(parameterMap)){
-            scheduleService.insertSchedule(parameterMap);
+            return judgmentResult(scheduleService.insertSchedule(parameterMap));
         }
-
-
-
+        return ResultTools.failData("签名错误");
     }
+
+
+
+//    @ApiOperation(value = "根据id查询排班")
+//    @PostMapping("schedule/list")
+//    public Result getSchedule(HttpServletRequest request){
+//        Map<String, Object> parameterMap = getParameterMap(request);
+//
+//    }
+
+
+
+
+
+
 
 
 

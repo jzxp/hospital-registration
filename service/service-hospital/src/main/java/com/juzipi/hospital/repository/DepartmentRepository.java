@@ -17,5 +17,4 @@ public interface DepartmentRepository extends MongoRepository<Department, String
 
     Integer removeByHpCodeAndDepCode(String hpCode, String depCode);
 
-    Department queryDepartmentByDepCode(String depCode);
 }

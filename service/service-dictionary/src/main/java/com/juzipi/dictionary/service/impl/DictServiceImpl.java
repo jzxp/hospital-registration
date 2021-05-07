@@ -56,11 +56,6 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
         //查询数据库
 //        List<Dict> dicts = baseMapper.selectList(new QueryWrapper<Dict>().lambda().select(Dict::getId, Dict::getParentId, Dict::getDictName, Dict::getDictValue, Dict::getDictCode));
         List<DictExcelVo> dictExcelVos = baseMapper.queryDictExcelVoList();
-//        DictExcelVo dictExcelVo = new DictExcelVo();
-//        ArrayList<DictExcelVo> dictExcelVos = new ArrayList<>();
-//        dicts.forEach(dict -> BeanUtils.copyProperties(dict,dictExcelVo));
-//        dictExcelVos.add(dictExcelVo);
-
         try {
             EasyExcel.write(response.getOutputStream(), DictExcelVo.class).sheet("dict").doWrite(dictExcelVos);
         } catch (IOException e) {

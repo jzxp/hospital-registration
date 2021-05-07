@@ -13,7 +13,7 @@ import java.util.Date;
 /**
  * @Author juzipi
  * @Date 2021/5/5 19:33
- * @Info
+ * @Info 医生日程实体类
  */
 @Data
 @ApiModel(value = "医生日程表")

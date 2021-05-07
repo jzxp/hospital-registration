@@ -33,16 +33,16 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr class="gradeX" th:each="item,it : ${data}">
+                            <tr class="gradeX" th:each="item,it : ${data.records}">
                                 <td th:text="${it.count}">11</td>
-                                <td th:text="${item.recoreds.hpCode}">22</td>
-                                <td th:text="${item.recoreds.depCode}">33</td>
-                                <td th:text="${item.recoreds.depName}">22</td>
-                                <td th:text="${item.recoreds.bigCode}">22</td>
-                                <td th:text="${item.recoreds.bigName}">33</td>
-                                <td th:text="${item.recoreds.introduction}">33</td>
+                                <td th:text="${item.hpCode}">22</td>
+                                <td th:text="${item.depCode}">33</td>
+                                <td th:text="${item.depName}">22</td>
+                                <td th:text="${item.bigCode}">22</td>
+                                <td th:text="${item.bigName}">33</td>
+                                <td th:text="${item.introduction}">33</td>
                                 <td class="text-center">
-                                    <a class="delete" th:attr="data-depcode=${item.recoreds.depCode}">删除</a>
+                                    <a class="delete" th:attr="data-depcode=${item.depCode}">删除</a>
                                 </td>
                             </tr>
                             </tbody>
@@ -79,6 +79,10 @@ var app = new Vue({
         fetchData(page = 1) {
             document.forms.ec.pageNum.value=page
             document.forms.ec.submit();
+
+            console.log(this.total)
+            console.log(this.pageNum)
+            console.log((this.pageSize))
         }
     }
 })

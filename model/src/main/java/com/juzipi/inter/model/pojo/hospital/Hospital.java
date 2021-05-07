@@ -1,5 +1,6 @@
 package com.juzipi.inter.model.pojo.hospital;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -60,9 +61,15 @@ public class Hospital extends BaseMongoEntity {
     @ApiModelProperty(value = "路程")
     private String route;
 
-    @ApiModelProperty(value = "状态码")
+    @ApiModelProperty(value = "状态码（0未上线，1已上线）")
     private Integer status;
 
+    //预约规则
+    @ApiModelProperty(value = "预约规则")
+    private BookingRule bookingRule;
 
+    public void setBookingRule(String bookingRule) {
+        this.bookingRule = JSONObject.parseObject(bookingRule, BookingRule.class);
+    }
 
 }

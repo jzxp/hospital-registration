@@ -1,11 +1,11 @@
 package com.juzipi.hospital.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.juzipi.commonutil.constant.ConstantsMp;
 import com.juzipi.commonutil.util.StringUtils;
 import com.juzipi.hospital.repository.ScheduleRepository;
 import com.juzipi.hospital.service.ScheduleService;
-import com.juzipi.inter.model.pojo.hospital.Hospital;
 import com.juzipi.inter.model.pojo.hospital.Schedule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +25,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     private ScheduleRepository scheduleRepository;
 
 
+    /**
+     * 上传排班
+     * @param parameterMap
+     * @return
+     */
     @Override
     public Schedule insertSchedule(Map<String, Object> parameterMap) {
         //先转为String, 再用parseObject方法 传入相应的参数转为hospitalEntity对象
@@ -33,11 +38,12 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         //查询数据库得到的为空表示不存在此数据就是新增，否则就是更新
         //此处有问题，更新操作依然是新增
-        Schedule scheduleExists = checkScheduleExists(schedule.getHpCode());
+        Schedule scheduleExists = checkScheduleExists(schedule.getHpCode(), schedule.getDepCode());
         if (StringUtils.isNull(scheduleExists)){
             //为空就是新增
             schedule.setCreateTime(new Date());
-            schedule.setStatus(ConstantsMp.STATUS_VALUE_MONGO);
+            //默认为1空闲
+            schedule.setStatus(ConstantsMp.SCHEDULE_STATUS_VALUE_MONGO);
             schedule.setUpdateTime(schedule.getCreateTime());
             schedule.setDeleted(ConstantsMp.DELETED_VALUE);
             return scheduleRepository.save(schedule);
@@ -50,9 +56,14 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 
 
-    private Schedule checkScheduleExists(String hpCode) {
-
-        scheduleRepository.query
+    /**
+     * 根据hpCode和depCode查询schedule
+     * @param hpCode
+     * @param depCode
+     * @return Schedule
+     */
+    private Schedule checkScheduleExists(String hpCode, String depCode) {
+        return scheduleRepository.queryScheduleByHpCodeAndDepCode(hpCode, depCode);
     }
 
 

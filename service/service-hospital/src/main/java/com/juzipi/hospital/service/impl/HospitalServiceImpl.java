@@ -44,7 +44,8 @@ public class HospitalServiceImpl implements HospitalService {
         if (StringUtils.isNull(hospitalExists)){
             //为空就是新增
             hospital.setCreateTime(new Date());
-            hospital.setStatus(ConstantsMp.STATUS_VALUE_MONGO);
+            //默认为0未上线
+            hospital.setStatus(ConstantsMp.HOSPITAL_STATUS_VALUE_MONGO);
             hospital.setUpdateTime(hospital.getCreateTime());
             hospital.setDeleted(ConstantsMp.DELETED_VALUE);
             return hospitalRepository.save(hospital);

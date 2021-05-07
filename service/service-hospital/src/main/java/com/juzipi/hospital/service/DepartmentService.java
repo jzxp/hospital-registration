@@ -1,12 +1,8 @@
 package com.juzipi.hospital.service;
 
 import com.github.pagehelper.PageInfo;
-import com.juzipi.commonutil.tool.PageResult;
 import com.juzipi.inter.model.pojo.hospital.Department;
-import com.juzipi.inter.vo.DepartmentSelectVo;
-import org.springframework.data.domain.Page;
 
-import java.util.List;
 import java.util.Map;
 
 /**

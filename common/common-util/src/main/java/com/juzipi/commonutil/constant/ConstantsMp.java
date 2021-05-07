@@ -30,8 +30,12 @@ public class ConstantsMp {
     /**
      * hospital 表(mongodb)
      */
-    public static final Integer STATUS_VALUE_MONGO = 0;//状态码,0未上线,1已上线
+    public static final Integer HOSPITAL_STATUS_VALUE_MONGO = 0;//状态码,0未上线,1已上线
 
 
+    /**
+     * schedule表（mongo）
+     */
+    public static final Integer SCHEDULE_STATUS_VALUE_MONGO = 1;//状态：-1停诊，0停约，1空闲
 
 }
