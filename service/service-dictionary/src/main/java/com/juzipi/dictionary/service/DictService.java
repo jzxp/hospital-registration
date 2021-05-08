@@ -16,6 +16,7 @@ public interface DictService extends IService<Dict> {
 
     /**
      * 根据字典编码和值查询字典
+     *
      * @param dictCode
      * @param dictValue
      * @return
@@ -24,6 +25,7 @@ public interface DictService extends IService<Dict> {
 
     /**
      * 根据id查询子数据列表
+     *
      * @param id
      * @return
      */

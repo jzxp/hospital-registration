@@ -4,11 +4,11 @@ import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.juzipi.commonutil.exception.ExcelException;
+import com.juzipi.dictionary.listener.DictListener;
 import com.juzipi.dictionary.mapper.DictMapper;
 import com.juzipi.dictionary.service.DictService;
 import com.juzipi.inter.model.pojo.dictionary.Dict;
 import com.juzipi.inter.vo.DictExcelVo;
-import com.juzipi.serviceutil.listener.DictListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -36,7 +36,6 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
     public String queryDictByCodeAndValue(String dictCode, String dictValue) {
         Dict dict = baseMapper.selectOne(new QueryWrapper<Dict>().lambda().eq(Dict::getDictCode, dictCode).or().eq(Dict::getDictValue, dictValue));
         return dict.getDictName();
-
     }
 
     @Cacheable(value = "dict", keyGenerator = "keyGenerator")
@@ -74,26 +73,33 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
             return true;
         } catch (IOException e) {
             e.printStackTrace();
-            throw new ExcelException("导入数据",this.getClass().getName(),e.getMessage());
+            throw new ExcelException("导入数据", this.getClass().getName(), e.getMessage());
         }
     }
 
 
     /**
      * 根据字典id判断是否有子数据
+     *
      * @param dictId
      * @return 布尔
      */
-    private Boolean isChildren(Long dictId){
+    private Boolean isChildren(Long dictId) {
         return baseMapper.isChildren(dictId) > 0;
     }
 
 
-    private HttpServletResponse setResponse(HttpServletResponse response){
+    /**
+     * 设置返回结果信息
+     *
+     * @param response
+     * @return
+     */
+    private HttpServletResponse setResponse(HttpServletResponse response) {
         response.setContentType("application/vnd.ms-excel");
         response.setCharacterEncoding("utf-8");
         String fileName = "dict";
-        response.setHeader("Content-disposition", "attachment;filename="+ fileName + ".xls");
+        response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xls");
         return response;
     }
 

@@ -17,21 +17,27 @@
     </resultMap>
 
     <sql id="baseSelect">
-        select * from data_dict
+        select *
+        from data_dict
     </sql>
 
     <select id="queryChildDataById" parameterType="Long" resultType="com.juzipi.inter.model.pojo.dictionary.Dict">
         <include refid="baseSelect"/>
         where parent_id = id and deleted = 0
     </select>
-    
+
     <select id="isChildren" parameterType="long" resultType="int">
-        select COUNT(*) from data_dict where parent_id = #{dictId} and deleted = 0
+        select COUNT(*)
+        from data_dict
+        where parent_id = #{dictId}
+          and deleted = 0
     </select>
 
 
     <select id="queryDictExcelVoList" resultType="com.juzipi.inter.vo.DictExcelVo">
-        select d.id,d.parent_id,d.dict_name,d.dict_value,d.dict_code from data_dict d where deleted = 0;
+        select d.id, d.parent_id, d.dict_name, d.dict_value, d.dict_code
+        from data_dict d
+        where deleted = 0;
     </select>
 
 </mapper>

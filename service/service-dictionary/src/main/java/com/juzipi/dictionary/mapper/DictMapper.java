@@ -15,6 +15,7 @@ public interface DictMapper extends BaseMapper<Dict> {
 
     /**
      * 根据id查询子数据
+     *
      * @param id
      * @return
      */
@@ -22,6 +23,7 @@ public interface DictMapper extends BaseMapper<Dict> {
 
     /**
      * 判断是否有子数据
+     *
      * @param dictId
      * @return
      */
