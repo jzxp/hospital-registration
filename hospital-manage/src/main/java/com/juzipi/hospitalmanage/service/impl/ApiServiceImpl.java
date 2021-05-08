@@ -222,7 +222,7 @@ public class ApiServiceImpl implements ApiService {
         for(int i=0, len=jsonArray.size(); i<len; i++) {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-            Long id = jsonObject.getLong("hosScheduleId");
+            Long id = jsonObject.getLong("hpScheduleId");
             Schedule schedule = new Schedule();
             schedule.setId(id);
             schedule.setHpCode(this.getHpCode());
@@ -258,7 +258,7 @@ public class ApiServiceImpl implements ApiService {
             paramMap.put("availableNumber",schedule.getAvailableNumber());
             paramMap.put("amount",schedule.getAmount());
             paramMap.put("status",schedule.getStatus());
-            paramMap.put("hosScheduleId",schedule.getId());
+            paramMap.put("hpScheduleId",schedule.getId());
             paramMap.put("timestamp", HttpRequestHelper.getTimestamp());
             paramMap.put("sign",HttpRequestHelper.getSign(paramMap, this.getSignKey()));
 
@@ -272,10 +272,10 @@ public class ApiServiceImpl implements ApiService {
     }
 
     @Override
-    public boolean removeSchedule(String hosScheduleId) {
+    public boolean removeSchedule(String hpScheduleId) {
         Map<String, Object> paramMap = new HashMap<>();
         paramMap.put("hpCode",this.getHpCode());
-        paramMap.put("hosScheduleId",hosScheduleId);
+        paramMap.put("hpScheduleId",hpScheduleId);
         paramMap.put("timestamp", HttpRequestHelper.getTimestamp());
         paramMap.put("sign", HttpRequestHelper.getSign(paramMap, this.getSignKey()));
         JSONObject respone = HttpRequestHelper.sendRequest(paramMap,this.getApiUrl()+"/api/hosp/schedule/remove");

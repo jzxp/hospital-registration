@@ -131,10 +131,10 @@ public class ApiController extends BaseController {
     @PostMapping("saveSchedule")
     public Result insertSchedule(HttpServletRequest request){
         Map<String, Object> parameterMap = getParameterMap(request);
-        if (checkSign(parameterMap)){
-            return judgmentResult(scheduleService.insertSchedule(parameterMap));
-        }
-        return ResultTools.failData("签名错误");
+//        if (checkSign(parameterMap)){
+        return judgmentResult(scheduleService.insertSchedule(parameterMap));
+//        }
+//        return ResultTools.failData("签名错误");
     }
 
 

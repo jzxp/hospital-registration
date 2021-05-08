@@ -1,5 +1,6 @@
 package com.juzipi.inter.model.pojo.hospital;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.juzipi.inter.model.base.BaseMongoEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -33,6 +34,7 @@ public class Schedule extends BaseMongoEntity {
     private String depCode;
 
     @ApiModelProperty(value = "职称")
+    @TableField(value = "title")
     private String title;
 
     @ApiModelProperty(value = "医生名字")
@@ -47,17 +49,20 @@ public class Schedule extends BaseMongoEntity {
     @ApiModelProperty(value = "排班时间")
     private Integer workTime;
 
-    @ApiModelProperty(value = "排班编号")
+    @ApiModelProperty(value = "可预约数")
     private Integer reservedNumber;
+
+
+    @ApiModelProperty(value = "剩余预约数")
+    private Integer availableNumber;
+
 
     @ApiModelProperty(value = "挂号费")
     //BigDecimal 表示一个任意大小且精度完全准确的浮点数。
-    private BigDecimal amount;
+    private String amount;
 
     @ApiModelProperty(value = "排班状态（-1：停诊，0:停约，1：可约）")
     private Integer status;
-
-
 
 
 }

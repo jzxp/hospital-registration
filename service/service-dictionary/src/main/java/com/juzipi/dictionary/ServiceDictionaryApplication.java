@@ -11,8 +11,8 @@ import org.springframework.context.annotation.ComponentScan;
  * @Info 数据字典模块启动类
  */
 @SpringBootApplication
+@MapperScan("com.juzipi.dictionary.mapper")
 @ComponentScan(basePackages = "com.juzipi")
-@MapperScan(value = "com.juzipi.dictionary.mapper")
 public class ServiceDictionaryApplication {
 
     public static void main(String[] args) {

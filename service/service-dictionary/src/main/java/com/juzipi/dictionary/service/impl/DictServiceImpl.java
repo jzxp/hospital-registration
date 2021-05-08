@@ -4,6 +4,7 @@ import com.alibaba.excel.EasyExcel;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.juzipi.commonutil.exception.ExcelException;
+import com.juzipi.commonutil.util.StringUtils;
 import com.juzipi.dictionary.listener.DictListener;
 import com.juzipi.dictionary.mapper.DictMapper;
 import com.juzipi.dictionary.service.DictService;
@@ -17,7 +18,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author juzipi
@@ -28,24 +31,29 @@ import java.util.List;
 public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements DictService {
 
 
+
     @Autowired
-    private DictListener dictListener;
+    private DictMapper dictMapper;
 
 
     @Override
     public String queryDictByCodeAndValue(String dictCode, String dictValue) {
-        Dict dict = baseMapper.selectOne(new QueryWrapper<Dict>().lambda().eq(Dict::getDictCode, dictCode).or().eq(Dict::getDictValue, dictValue));
+        if (StringUtils.isEmpty(dictCode)){
+            return dictMapper.selectOne(new QueryWrapper<Dict>().lambda().eq(Dict::getDictValue, dictValue).last("LIMIT 1")).getDictName();
+        }
+        Dict dict = dictMapper.selectOne(new QueryWrapper<Dict>().lambda().eq(Dict::getDictCode, dictCode).eq(Dict::getDictValue, dictValue));
         return dict.getDictName();
     }
 
     @Cacheable(value = "dict", keyGenerator = "keyGenerator")
     @Override
     public List<Dict> queryChildDataById(Long id) {
-        List<Dict> dicts = baseMapper.selectList(new QueryWrapper<Dict>().lambda().eq(Dict::getParentId, id));
+        List<Dict> dicts = dictMapper.selectList(new QueryWrapper<Dict>().lambda().eq(Dict::getParentId, id));
         //判断是否有子数据，遍历集合，把结果设置给hasChildren
         dicts.forEach(dict -> dict.setHasChildren(isChildren(dict.getId())));
         return dicts;
     }
+
 
 
     @Override
@@ -54,14 +62,15 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
         setResponse(response);
         //查询数据库
 //        List<Dict> dicts = baseMapper.selectList(new QueryWrapper<Dict>().lambda().select(Dict::getId, Dict::getParentId, Dict::getDictName, Dict::getDictValue, Dict::getDictCode));
-        List<DictExcelVo> dictExcelVos = baseMapper.queryDictExcelVoList();
+        List<DictExcelVo> dictExcelVos = dictMapper.queryDictExcelVoList();
         try {
             EasyExcel.write(response.getOutputStream(), DictExcelVo.class).sheet("dict").doWrite(dictExcelVos);
         } catch (IOException e) {
             e.printStackTrace();
-            throw new ExcelException("导出excel数据", this.getClass().getName(), e.getMessage());
+            throw new ExcelException("导出数据", this.getClass().getName(), e.getMessage());
         }
     }
+
 
 
     //刷新缓存中的内容
@@ -69,13 +78,15 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
     @Override
     public Boolean importData(MultipartFile uploadFiles) {
         try {
-            EasyExcel.read(uploadFiles.getInputStream(), DictExcelVo.class, dictListener).sheet().doRead();
+            EasyExcel.read(uploadFiles.getInputStream(), DictExcelVo.class, new DictListener()).sheet().doRead();
             return true;
         } catch (IOException e) {
             e.printStackTrace();
             throw new ExcelException("导入数据", this.getClass().getName(), e.getMessage());
         }
     }
+
+
 
 
     /**
@@ -85,7 +96,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
      * @return 布尔
      */
     private Boolean isChildren(Long dictId) {
-        return baseMapper.isChildren(dictId) > 0;
+        return dictMapper.isChildren(dictId) > 0;
     }
 
 
@@ -102,5 +113,6 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
         response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xls");
         return response;
     }
+
 
 }

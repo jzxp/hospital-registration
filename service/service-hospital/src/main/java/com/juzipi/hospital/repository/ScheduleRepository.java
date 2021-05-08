@@ -10,6 +10,6 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  */
 public interface ScheduleRepository extends MongoRepository<Schedule, String> {
 
-    Schedule queryScheduleByHpCodeAndHpScheduleId(String hpCode, String HpScheduleId)
+    Schedule queryScheduleByHpCodeAndHpScheduleId(String hpCode, String HpScheduleId);
 
 }

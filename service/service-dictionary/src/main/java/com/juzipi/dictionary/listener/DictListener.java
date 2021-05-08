@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class DictListener extends AnalysisEventListener<DictExcelVo> {
 
+
     @Autowired
     private DictMapper dictMapper;
 

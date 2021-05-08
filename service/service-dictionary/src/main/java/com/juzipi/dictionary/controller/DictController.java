@@ -1,9 +1,7 @@
 package com.juzipi.dictionary.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.juzipi.commonutil.tool.Result;
 import com.juzipi.dictionary.service.DictService;
-import com.juzipi.inter.model.pojo.dictionary.Dict;
 import com.juzipi.serviceutil.core.BaseController;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -55,11 +53,11 @@ public class DictController extends BaseController {
         return judgmentResult(dictService.queryDictByCodeAndValue(dictCode, dictValue));
     }
 
+
     @ApiOperation(value = "根据字典值查询字典名字")
     @GetMapping("getName/{dictValue}")
     public Result getDictName(@PathVariable String dictValue) {
-        Dict dict = dictService.getOne(new QueryWrapper<Dict>().lambda().eq(Dict::getDictValue, dictValue));
-        return judgmentResult(dict.getDictName());
+        return judgmentResult(dictService.queryDictByCodeAndValue("",dictValue));
     }
 
 
