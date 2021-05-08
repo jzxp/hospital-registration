@@ -25,7 +25,7 @@ public class PageBody {
 
     //排序字段
     @ApiModelProperty(value = "排序字段")
-    private String orderBy;
+    private Object object;
 
 
 }

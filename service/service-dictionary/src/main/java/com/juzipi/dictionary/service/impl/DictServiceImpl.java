@@ -18,9 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author juzipi
@@ -38,12 +36,17 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
 
     @Override
     public String queryDictByCodeAndValue(String dictCode, String dictValue) {
+        //dictCode为空就表示它是分类下具体的条目，就根据它的dictValue去查询就能得到唯一值
         if (StringUtils.isEmpty(dictCode)){
             return dictMapper.selectOne(new QueryWrapper<Dict>().lambda().eq(Dict::getDictValue, dictValue).last("LIMIT 1")).getDictName();
         }
-        Dict dict = dictMapper.selectOne(new QueryWrapper<Dict>().lambda().eq(Dict::getDictCode, dictCode).eq(Dict::getDictValue, dictValue));
-        return dict.getDictName();
+        //不为空就根据dictCode和dictValue查询
+        Dict dict = dictMapper.selectOne(new QueryWrapper<Dict>().lambda().eq(Dict::getDictCode, dictCode));
+        //用dictParentId和dictValue来确认唯一的分类值
+        return dictMapper.selectOne(new QueryWrapper<Dict>().lambda().eq(Dict::getParentId, dict.getId()).eq(Dict::getDictValue, dict.getDictValue())).getDictName();
     }
+
+
 
     @Cacheable(value = "dict", keyGenerator = "keyGenerator")
     @Override

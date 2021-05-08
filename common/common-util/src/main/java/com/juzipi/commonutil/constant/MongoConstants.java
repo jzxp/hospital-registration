@@ -25,4 +25,8 @@ public class MongoConstants {
     public static final Integer DELETED_VALUE_FALSE = 0;//逻辑删除：0未删除，1已删除
 
     public static final String HP_SCHEDULE_ID = "hpScheduleId";
+
+    public static final String HP_TYPE = "hpType";
+
+
 }

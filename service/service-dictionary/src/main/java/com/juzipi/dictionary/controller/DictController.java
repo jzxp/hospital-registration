@@ -57,8 +57,13 @@ public class DictController extends BaseController {
     @ApiOperation(value = "根据字典值查询字典名字")
     @GetMapping("getName/{dictValue}")
     public Result getDictName(@PathVariable String dictValue) {
-        return judgmentResult(dictService.queryDictByCodeAndValue("",dictValue));
+        return judgmentResult(dictService.queryDictByCodeAndValue(null,dictValue));
     }
+
+
+
+
+
 
 
 }
