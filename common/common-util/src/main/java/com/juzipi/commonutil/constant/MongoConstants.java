@@ -29,4 +29,5 @@ public class MongoConstants {
     public static final String HP_TYPE = "hpType";
 
 
+    public static final String FULL_ADDRESS = "fullAddress";//完整地址
 }

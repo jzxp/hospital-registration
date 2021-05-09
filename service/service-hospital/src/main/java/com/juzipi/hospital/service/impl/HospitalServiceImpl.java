@@ -122,12 +122,14 @@ public class HospitalServiceImpl implements HospitalService {
     public Hospital setHospitalHpType(Hospital hospital) {
         //这里代码思路不太好吧，感觉有点捞
         //hospital表里的hpType就是data_dict表里的dict_value
-        String dictName = dictFeignClient.getDictName(null, hospital.getHpType());
+        String dictName = dictFeignClient.getName(null, hospital.getHpType());
         //设置进hospital的param（map）字段里，键是hpType,值就是查出来的dictName
         hospital.getParam().put(MongoConstants.HP_TYPE, dictName);
         //查询省，市，地区
-
-
+        String provinceCode = dictFeignClient.getName(hospital.getProvinceCode());
+        String cityCode = dictFeignClient.getName(hospital.getCityCode());
+        String districtCode = dictFeignClient.getName(hospital.getDistrictCode());
+        hospital.getParam().put(MongoConstants.FULL_ADDRESS, provinceCode+cityCode+districtCode);
         return hospital;
     }
 }

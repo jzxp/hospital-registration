@@ -15,9 +15,9 @@ public interface DictFeignClient {
 
 
     @GetMapping("admin/dict/getName/{dictCode}/{dictValue}")
-    public String getDictName(@PathVariable("dictCode") String dictCode, @PathVariable("dictValue") String dictValue);
+    public String getName(@PathVariable("dictCode") String dictCode, @PathVariable("dictValue") String dictValue);
 
     @GetMapping("admin/dict/getName/{dictValue}")
-    public String getDictName(@PathVariable("dictValue") String dictValue);
+    public String getName(@PathVariable("dictValue") String dictValue);
 
 }

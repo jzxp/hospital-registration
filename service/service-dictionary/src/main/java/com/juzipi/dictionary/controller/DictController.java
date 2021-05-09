@@ -49,14 +49,14 @@ public class DictController extends BaseController {
 
     @ApiOperation(value = "根据字典编码和字典值查询字典名字")
     @GetMapping("getName/{dictCode}/{dictValue}")
-    public Result getDictName(@PathVariable String dictCode, @PathVariable String dictValue) {
+    public Result getName(@PathVariable String dictCode, @PathVariable String dictValue) {
         return judgmentResult(dictService.queryDictByCodeAndValue(dictCode, dictValue));
     }
 
 
     @ApiOperation(value = "根据字典值查询字典名字")
     @GetMapping("getName/{dictValue}")
-    public Result getDictName(@PathVariable String dictValue) {
+    public Result getName(@PathVariable String dictValue) {
         return judgmentResult(dictService.queryDictByCodeAndValue(null,dictValue));
     }
 
