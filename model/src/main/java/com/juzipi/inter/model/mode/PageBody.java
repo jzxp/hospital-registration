@@ -23,8 +23,7 @@ public class PageBody {
     @ApiModelProperty(value = "页面大小")
     private Long pageSize;
 
-    //排序字段
-    @ApiModelProperty(value = "排序字段")
+    @ApiModelProperty(value = "对象参数")
     private Object object;
 
 

@@ -7,6 +7,7 @@ import com.github.pagehelper.PageInfo;
 import com.juzipi.client.dict.DictFeignClient;
 import com.juzipi.commonutil.constant.ConstantsMp;
 import com.juzipi.commonutil.constant.MongoConstants;
+import com.juzipi.commonutil.tool.Result;
 import com.juzipi.commonutil.util.StringUtils;
 import com.juzipi.hospital.mapper.HospitalSetMapper;
 import com.juzipi.hospital.repository.HospitalRepository;
@@ -14,7 +15,9 @@ import com.juzipi.hospital.service.HospitalService;
 import com.juzipi.inter.model.mode.PageBody;
 import com.juzipi.inter.model.pojo.hospital.Hospital;
 import com.juzipi.inter.model.pojo.hospital.HospitalSet;
+import com.juzipi.inter.vo.hospital.HospitalSelectVo;
 import com.juzipi.serviceutil.util.MD5;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
@@ -90,17 +93,18 @@ public class HospitalServiceImpl implements HospitalService {
 
 
     @Override
-    public PageInfo<Hospital> queryHospitalPage(PageBody pageBody) {
+    public PageInfo<Hospital> queryHospitalPage(PageBody pageBody, HospitalSelectVo hospitalSelectVo) {
         //分页
         PageHelper.startPage(pageBody.getPageNum().intValue(), pageBody.getPageSize().intValue());
         //条件匹配器
         ExampleMatcher exampleMatcher = ExampleMatcher.matching().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
-        //从参数里获取到hospital
-        Hospital hospital = (Hospital) pageBody.getObject();
+        Hospital hospital = new Hospital();
+        //把hospitalSelectVo里的值复制到hospital里
+        BeanUtils.copyProperties(hospitalSelectVo, hospital);
         List<Hospital> hospitals = hospitalRepository.findAll(Example.of(hospital, exampleMatcher));
         PageInfo<Hospital> hospitalPageInfo = new PageInfo<>(hospitals);
         //远程调用查询dictName接口查询出医院等级
-        hospitalPageInfo.getList().forEach(entry -> setHospitalHpType(entry));
+        hospitalPageInfo.getList().forEach(this::setHospitalHpType);
 
         return hospitalPageInfo;
     }
@@ -122,14 +126,15 @@ public class HospitalServiceImpl implements HospitalService {
     public Hospital setHospitalHpType(Hospital hospital) {
         //这里代码思路不太好吧，感觉有点捞
         //hospital表里的hpType就是data_dict表里的dict_value
-        String dictName = dictFeignClient.getName(null, hospital.getHpType());
+        Result hpType = dictFeignClient.getName(hospital.getHpType());
         //设置进hospital的param（map）字段里，键是hpType,值就是查出来的dictName
-        hospital.getParam().put(MongoConstants.HP_TYPE, dictName);
+        hospital.getParam().put(MongoConstants.HP_TYPE, hpType.getData().toString());
         //查询省，市，地区
-        String provinceCode = dictFeignClient.getName(hospital.getProvinceCode());
-        String cityCode = dictFeignClient.getName(hospital.getCityCode());
-        String districtCode = dictFeignClient.getName(hospital.getDistrictCode());
-        hospital.getParam().put(MongoConstants.FULL_ADDRESS, provinceCode+cityCode+districtCode);
+        Result provinceCode = dictFeignClient.getName(hospital.getProvinceCode());
+        Result cityCode = dictFeignClient.getName(hospital.getCityCode());
+        Result districtCode = dictFeignClient.getName(hospital.getDistrictCode());
+        hospital.getParam().put(MongoConstants.FULL_ADDRESS,
+                provinceCode.getData().toString() + cityCode.getData().toString() + districtCode.getData().toString());
         return hospital;
     }
 }

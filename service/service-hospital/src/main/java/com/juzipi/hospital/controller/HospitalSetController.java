@@ -19,7 +19,7 @@ import java.util.List;
  * @Date 2021/4/27 14:35
  * @Info
  */
-@Api(tags = "医院管理")
+@Api(tags = "医院设置管理")
 @RestController
 @RequestMapping("admin/hospitalSet")
 public class HospitalSetController extends BaseController {

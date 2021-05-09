@@ -14,10 +14,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface DictFeignClient {
 
 
+    /*
+    feign远程调用的方法返回的值是对象的时候，该对象需要有无参构造
+     */
     @GetMapping("admin/dict/getName/{dictCode}/{dictValue}")
     public String getName(@PathVariable("dictCode") String dictCode, @PathVariable("dictValue") String dictValue);
 
     @GetMapping("admin/dict/getName/{dictValue}")
-    public String getName(@PathVariable("dictValue") String dictValue);
+    public Result getName(@PathVariable("dictValue") String dictValue);
+
 
 }

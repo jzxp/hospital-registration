@@ -38,7 +38,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
     public String queryDictByCodeAndValue(String dictCode, String dictValue) {
         //dictCode为空就表示它是分类下具体的条目，就根据它的dictValue去查询就能得到唯一值
         if (StringUtils.isEmpty(dictCode)){
-            return dictMapper.selectOne(new QueryWrapper<Dict>().lambda().eq(Dict::getDictValue, dictValue).last("LIMIT 1")).getDictName();
+            return dictMapper.selectOne(new QueryWrapper<Dict>().lambda().eq(Dict::getDictValue, dictValue)).getDictName();
         }
         //不为空就根据dictCode和dictValue查询
         Dict dict = dictMapper.selectOne(new QueryWrapper<Dict>().lambda().eq(Dict::getDictCode, dictCode));

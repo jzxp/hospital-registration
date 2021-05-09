@@ -151,6 +151,7 @@ public class ApiController extends BaseController {
     }
 
 
+    @ApiOperation(value = "删除排班")
     @PostMapping("schedule/remove")
     public Result deleteSchedule(HttpServletRequest request){
         Map<String, Object> parameterMap = getParameterMap(request);

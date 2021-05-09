@@ -3,7 +3,9 @@ package com.juzipi.commonutil.tool;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @Author juzipi
@@ -12,6 +14,8 @@ import lombok.Data;
  */
 @ApiModel(value = "JSON结果实体类")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Result {
 
 
