@@ -32,7 +32,7 @@ public class HospitalSetController extends BaseController {
     @ApiOperation(value = "获取所有医院设置")
     @GetMapping("list")
     public Result selectHospitalSetList(){
-        return judgmentResult(hospitalSetService.list());
+        return judgmentResultData(hospitalSetService.list());
     }
 
 
@@ -44,7 +44,7 @@ public class HospitalSetController extends BaseController {
         } catch (Exception e) {
             throw new BaseException(this.getClass().getName(), BaseConstants.Error, id,e.getMessage());
         }
-        return judgmentResult(hospitalSetService.getById(id));
+        return judgmentResultData(hospitalSetService.getById(id));
     }
 
 

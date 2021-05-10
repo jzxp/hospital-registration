@@ -4,7 +4,6 @@ import com.github.pagehelper.PageInfo;
 import com.juzipi.inter.model.mode.PageBody;
 import com.juzipi.inter.model.pojo.hospital.Hospital;
 import com.juzipi.inter.vo.hospital.HospitalSelectVo;
-import org.springframework.data.domain.Page;
 
 import java.util.Map;
 
@@ -39,4 +38,6 @@ public interface HospitalService {
     Hospital queryHospitalByHpCode(Object hospitalCode);
 
     PageInfo<Hospital> queryHospitalPage(PageBody pageBody, HospitalSelectVo hospitalSelectVo);
+
+    Hospital updateHospitalStatus(String id, Integer status);
 }

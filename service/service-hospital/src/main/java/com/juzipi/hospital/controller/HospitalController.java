@@ -39,5 +39,13 @@ public class HospitalController extends BaseController {
     }
 
 
+    @ApiOperation(value = "更新医院上下线状态")
+    @GetMapping("updateHospitalStatus/{id}/{status}")
+    public Result updateHospital(@PathVariable String id, @PathVariable Integer status){
+        return judgmentResult(hospitalService.updateHospitalStatus(id, status));
+    }
+
+
+
 
 }

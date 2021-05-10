@@ -26,9 +26,20 @@ public class BaseController {
      * @param data Object
      * @return Result
      */
-    protected Result judgmentResult(Object data){
+    protected Result judgmentResultData(Object data){
         return StringUtils.isNotNull(data) ? ResultTools.successData(data) : ResultTools.fail();
     }
+
+
+    /**
+     * 判断对象，成功无返回值
+     * @param object
+     * @return
+     */
+    protected Result judgmentResult(Object object){
+        return StringUtils.isNotNull(object) ? ResultTools.success() : ResultTools.fail();
+    }
+
 
 
     /**
@@ -37,7 +48,7 @@ public class BaseController {
      * @return
      */
     protected Result judgmentResult(Collection<?> listData){
-        return listData.size() > 0 ? ResultTools.successData(listData) : ResultTools.failData("是空的");
+        return StringUtils.isNotEmpty(listData) ? ResultTools.successData(listData) : ResultTools.failData("是空的");
     }
 
 
@@ -82,7 +93,7 @@ public class BaseController {
 //        }
 //        return ResultTool.fail();
         //如果不是空的
-        return page.getRecords().size() > 0 ? ResultTools.successData(PageTools.getPageResult(page)) : ResultTools.fail();
+        return StringUtils.isEmpty(page.getRecords()) ? ResultTools.successData(PageTools.getPageResult(page)) : ResultTools.fail();
     }
 
 

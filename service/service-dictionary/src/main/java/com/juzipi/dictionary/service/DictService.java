@@ -35,4 +35,5 @@ public interface DictService extends IService<Dict> {
 
     Boolean importData(MultipartFile uploadFiles);
 
+    List<Dict> queryDictByDictCode(String dictCode);
 }

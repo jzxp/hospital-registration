@@ -20,6 +20,7 @@ public interface DictFeignClient {
     @GetMapping("admin/dict/getName/{dictCode}/{dictValue}")
     public String getName(@PathVariable("dictCode") String dictCode, @PathVariable("dictValue") String dictValue);
 
+    //Result需要有无参构造
     @GetMapping("admin/dict/getName/{dictValue}")
     public Result getName(@PathVariable("dictValue") String dictValue);
 

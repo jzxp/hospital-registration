@@ -10,6 +10,7 @@ import com.juzipi.dictionary.mapper.DictMapper;
 import com.juzipi.dictionary.service.DictService;
 import com.juzipi.inter.model.pojo.dictionary.Dict;
 import com.juzipi.inter.vo.DictExcelVo;
+import com.juzipi.serviceutil.core.BaseController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -42,6 +43,9 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
         }
         //不为空就根据dictCode和dictValue查询
         Dict dict = dictMapper.selectOne(new QueryWrapper<Dict>().lambda().eq(Dict::getDictCode, dictCode));
+        if (StringUtils.isNull(dict)){
+            return null;
+        }
         //用dictParentId和dictValue来确认唯一的分类值
         return dictMapper.selectOne(new QueryWrapper<Dict>().lambda().eq(Dict::getParentId, dict.getId()).eq(Dict::getDictValue, dict.getDictValue())).getDictName();
     }
@@ -52,8 +56,11 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
     @Override
     public List<Dict> queryChildDataById(Long id) {
         List<Dict> dicts = dictMapper.selectList(new QueryWrapper<Dict>().lambda().eq(Dict::getParentId, id));
+        if (StringUtils.isEmpty(dicts)){
+            return null;
+        }
         //判断是否有子数据，遍历集合，把结果设置给hasChildren
-        dicts.forEach(dict -> dict.setHasChildren(isChildren(dict.getId())));
+        dicts.forEach(dict -> dict.setHasChildren(this.isChildren(dict.getId())));
         return dicts;
     }
 
@@ -62,7 +69,7 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
     @Override
     public void exportData(HttpServletResponse response) {
         //设置下载信息
-        setResponse(response);
+        this.setResponse(response);
         //查询数据库
 //        List<Dict> dicts = baseMapper.selectList(new QueryWrapper<Dict>().lambda().select(Dict::getId, Dict::getParentId, Dict::getDictName, Dict::getDictValue, Dict::getDictCode));
         List<DictExcelVo> dictExcelVos = dictMapper.queryDictExcelVoList();
@@ -90,6 +97,31 @@ public class DictServiceImpl extends ServiceImpl<DictMapper, Dict> implements Di
     }
 
 
+
+    @Override
+    public List<Dict> queryDictByDictCode(String dictCode) {
+        Dict dict = dictMapper.selectOne(new QueryWrapper<Dict>().lambda().eq(Dict::getDictCode, dictCode));
+        //复用查询方法，根据id查询子节点，一样的操作
+        if (StringUtils.isNull(dict)){
+            return null;
+        }
+        return this.queryChildDataById(dict.getId());
+    }
+
+
+
+    //不太行
+//    /**
+//     * 检查返回值
+//     * @param object
+//     * @return 为空true，不为空false
+//     */
+//    private Boolean checkReturnData(Object object){
+//        if (StringUtils.isNull(object)) {
+//            return null;
+//        }
+//        return true;
+//    }
 
 
     /**

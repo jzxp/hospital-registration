@@ -17,5 +17,7 @@ public interface HospitalRepository extends MongoRepository<Hospital, Long> {
      */
     Hospital queryHospitalByHpCode(String hpCode);
 
+    Hospital queryById(String id);
+
 
 }

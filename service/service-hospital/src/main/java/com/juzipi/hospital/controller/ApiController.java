@@ -12,7 +12,6 @@ import com.juzipi.serviceutil.util.HttpRequestHelper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -66,7 +65,7 @@ public class ApiController extends BaseController {
         //同样的验证签名是否一致
         if (checkSign(map)) {
             Hospital hospital = hospitalService.queryHospitalByHpCode(hospitalCode);
-            return judgmentResult(hospital);
+            return judgmentResultData(hospital);
         }
         return ResultTools.failData("签名不一致");
     }
@@ -103,7 +102,7 @@ public class ApiController extends BaseController {
         加密前：100|10|1|1620374817541|23ce3b89e0a80072a57a4977582610dd
         加密后：80823b1961b7e5204969e8754255feda
          */
-        return judgmentResult(departmentService.queryPageDepartment(pageNum, pageSize, hpCode));
+        return judgmentResultData(departmentService.queryPageDepartment(pageNum, pageSize, hpCode));
     }
 
 

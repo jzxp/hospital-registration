@@ -110,6 +110,16 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
 
+
+    @Override
+    public Hospital updateHospitalStatus(String id, Integer status) {
+        Hospital hospital = hospitalRepository.queryById(id);
+        hospital.setStatus(status);
+        hospital.setUpdateTime(new Date());
+        return hospitalRepository.save(hospital);
+    }
+
+
     /**
      * 根据hpCode判断hospital是否存在
      * @param hpCode

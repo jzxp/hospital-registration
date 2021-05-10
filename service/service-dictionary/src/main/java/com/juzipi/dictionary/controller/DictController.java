@@ -61,6 +61,14 @@ public class DictController extends BaseController {
     }
 
 
+    @ApiOperation(value = "根据字典编码获取下级节点")
+    @GetMapping("findByDictCode/{dictCode}")
+    public Result getDictList(@PathVariable String dictCode){
+        return judgmentResult(dictService.queryDictByDictCode(dictCode));
+    }
+
+
+
 
 
 
