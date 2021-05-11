@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 /**
  * @Author juzipi
  * @Date 2021/5/6 14:25
@@ -33,7 +35,8 @@ public class ScheduleController extends BaseController {
             @PathVariable String hpCode,
             @PathVariable String depCode
                                   ){
-        scheduleService.queryPageScheduleRule(pageNum,pageSize,hpCode,depCode);
+        Map<String, Object> map = scheduleService.queryPageScheduleRule(pageNum, pageSize, hpCode, depCode);
+        return judgmentResult(map);
     }
 
 }

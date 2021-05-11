@@ -23,5 +23,5 @@ public interface ScheduleService {
 
     Integer removeSchedule(String hpCode, String hpScheduleId);
 
-    PageInfo<Schedule> queryPageScheduleRule(Integer pageNum, Integer pageSize, String hpCode, String depCode);
+    Map<String, Object> queryPageScheduleRule(Integer pageNum, Integer pageSize, String hpCode, String depCode);
 }

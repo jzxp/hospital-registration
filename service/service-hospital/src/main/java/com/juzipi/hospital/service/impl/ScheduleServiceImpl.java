@@ -8,7 +8,9 @@ import com.juzipi.commonutil.constant.MongoConstants;
 import com.juzipi.commonutil.exception.BaseException;
 import com.juzipi.commonutil.util.StringUtils;
 import com.juzipi.hospital.repository.ScheduleRepository;
+import com.juzipi.hospital.service.HospitalService;
 import com.juzipi.hospital.service.ScheduleService;
+import com.juzipi.inter.model.pojo.hospital.Hospital;
 import com.juzipi.inter.model.pojo.hospital.Schedule;
 import com.juzipi.inter.vo.hospital.BookingScheduleRuleVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     private ScheduleRepository scheduleRepository;
     @Autowired
     private MongoTemplate mongoTemplate;
+    @Autowired
+    private HospitalService hospitalService;
 
 
     /**
@@ -94,11 +98,8 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 
     @Override
-    public PageInfo<Schedule> queryPageScheduleRule(Integer pageNum, Integer pageSize, String hpCode, String depCode) {
-        PageHelper.startPage(pageNum,pageSize);
-        List<Schedule> schedules = scheduleRepository.queryByHpCodeAndDepCode(hpCode, depCode);
+    public Map<String, Object> queryPageScheduleRule(Integer pageNum, Integer pageSize, String hpCode, String depCode) {
         //不会写，这里逻辑太乱，赶进度，等有时间再琢磨琢磨
-        Map<Date, List<Schedule>> collect = schedules.stream().collect(Collectors.groupingBy(Schedule::getWorkDate));
         //查询条件
         Criteria criteria = Criteria.where("hpCode").is(hpCode).and("depCode").is(depCode);
         Aggregation aggregation = Aggregation.newAggregation(
@@ -112,11 +113,15 @@ public class ScheduleServiceImpl implements ScheduleService {
                 Aggregation.skip((pageNum - 1) * pageSize),//分页效果
                 Aggregation.limit(pageSize)
         );
-        //执行方法
         AggregationResults<BookingScheduleRuleVo> aggregate = mongoTemplate.aggregate(aggregation, Schedule.class, BookingScheduleRuleVo.class);
+        //执行方法
         List<BookingScheduleRuleVo> bookingScheduleRuleVos = aggregate.getMappedResults();
+        //分组查询总记录数
+        Aggregation totalAgg = Aggregation.newAggregation(Aggregation.match(criteria), Aggregation.group("workDate"));
+        AggregationResults<BookingScheduleRuleVo> aggregationResults = mongoTemplate.aggregate(totalAgg, Schedule.class, BookingScheduleRuleVo.class);
+
         //获取条数
-        int total = aggregate.getMappedResults().size();
+        int total = aggregationResults.getMappedResults().size();
         //根据日期转换星期
         bookingScheduleRuleVos.forEach(bookingScheduleRuleVo -> {
             Date workDate = bookingScheduleRuleVo.getWorkDate();
@@ -125,9 +130,13 @@ public class ScheduleServiceImpl implements ScheduleService {
         });
 
         //设置最终数据返回
-
-
-
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("bookingScheduleRuleList",bookingScheduleRuleVos);
+        resultMap.put("total",total);
+        //获取医院名称
+        Hospital hospital = hospitalService.getHospitalById(hpCode);
+        resultMap.put("hpName", hospital.getHpName());
+        return resultMap;
     }
 
 
