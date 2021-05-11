@@ -65,7 +65,7 @@ public class ApiController extends BaseController {
         //同样的验证签名是否一致
         if (checkSign(map)) {
             Hospital hospital = hospitalService.queryHospitalByHpCode(hospitalCode);
-            return judgmentResultData(hospital);
+            return judgmentResult(hospital);
         }
         return ResultTools.failData("签名不一致");
     }
@@ -102,7 +102,7 @@ public class ApiController extends BaseController {
         加密前：100|10|1|1620374817541|23ce3b89e0a80072a57a4977582610dd
         加密后：80823b1961b7e5204969e8754255feda
          */
-        return judgmentResultData(departmentService.queryPageDepartment(pageNum, pageSize, hpCode));
+        return judgmentResult(departmentService.queryPageDepartment(pageNum, pageSize, hpCode));
     }
 
 

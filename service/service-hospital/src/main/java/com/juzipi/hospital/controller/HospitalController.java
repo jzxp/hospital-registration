@@ -47,5 +47,13 @@ public class HospitalController extends BaseController {
 
 
 
+    @ApiOperation("医院详情")
+    @GetMapping("showHospital/{id}")
+    public Result getHospitalDetail(@PathVariable String id){
+        return judgmentResult(hospitalService.getHospitalById(id));
+    }
+
+
+
 
 }

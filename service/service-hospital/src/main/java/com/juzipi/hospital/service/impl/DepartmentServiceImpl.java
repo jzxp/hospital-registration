@@ -7,13 +7,13 @@ import com.juzipi.commonutil.util.StringUtils;
 import com.juzipi.hospital.repository.DepartmentRepository;
 import com.juzipi.hospital.service.DepartmentService;
 import com.juzipi.inter.model.pojo.hospital.Department;
+import com.juzipi.inter.vo.hospital.DepartmentVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Author juzipi
@@ -81,6 +81,41 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
 
+
+    @Override
+    public List<DepartmentVo> queryDepartmentList(String hpCode) {
+        //最终数据集合
+        ArrayList<DepartmentVo> departmentVos = new ArrayList<>();
+        Department department = new Department();
+        department.setHpCode(hpCode);
+        //根据hpCode查询出departmentList
+        List<Department> departments = departmentRepository.findAll(Example.of(department));
+        //分组
+        Map<String, List<Department>> departmentMap = departments.stream().collect(Collectors.groupingBy(Department::getBigCode));
+        /*
+        根据hpCode查询出departmentList，然后通过stream流根据bigCode（大科室编码）给它分组得到一个map集合
+        遍历此map把键bigCode（大科室编码）设置进 new的一个DepartmentVo类里
+        再new一个ArrayList用来装小科室，然后遍历值Department集合，
+        再在里面new一个DepartmentVo，把遍历的编码和值分别设置进去，再添加到ArrayList里
+         */
+        departmentMap.forEach((k,v)->{
+            //封装大科室
+            DepartmentVo departmentVo = new DepartmentVo();
+            departmentVo.setDepCode(k);
+            departmentVo.setDepName(v.get(0).getBigName());
+            //封装小科室
+            ArrayList<DepartmentVo> children = new ArrayList<>();
+            v.forEach(depart ->{
+                DepartmentVo departmentVoChildren = new DepartmentVo();
+                departmentVoChildren.setDepCode(depart.getDepCode());
+                departmentVoChildren.setDepName(depart.getDepName());
+                children.add(departmentVoChildren);
+            });
+            departmentVo.setChildren(children);
+            departmentVos.add(departmentVo);
+        });
+        return departmentVos;
+    }
 
 
     /**

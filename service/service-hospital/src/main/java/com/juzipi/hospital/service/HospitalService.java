@@ -40,4 +40,6 @@ public interface HospitalService {
     PageInfo<Hospital> queryHospitalPage(PageBody pageBody, HospitalSelectVo hospitalSelectVo);
 
     Hospital updateHospitalStatus(String id, Integer status);
+
+    Hospital getHospitalById(String id);
 }

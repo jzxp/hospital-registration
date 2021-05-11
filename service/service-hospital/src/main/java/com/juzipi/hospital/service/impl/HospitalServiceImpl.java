@@ -120,6 +120,14 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
 
+
+    @Override
+    public Hospital getHospitalById(String id) {
+        //查询出基本信息，然后再调用setHospitalHpType方法加入其他一些信息
+        return this.setHospitalHpType(hospitalRepository.queryById(id));
+    }
+
+
     /**
      * 根据hpCode判断hospital是否存在
      * @param hpCode
@@ -136,6 +144,9 @@ public class HospitalServiceImpl implements HospitalService {
     public Hospital setHospitalHpType(Hospital hospital) {
         //这里代码思路不太好吧，感觉有点捞
         //hospital表里的hpType就是data_dict表里的dict_value
+        if (StringUtils.isNull(hospital)){
+            return null;
+        }
         Result hpType = dictFeignClient.getName(hospital.getHpType());
         //设置进hospital的param（map）字段里，键是hpType,值就是查出来的dictName
         hospital.getParam().put(MongoConstants.HP_TYPE, hpType.getData().toString());

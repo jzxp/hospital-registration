@@ -2,8 +2,10 @@ package com.juzipi.hospital.service;
 
 import com.github.pagehelper.PageInfo;
 import com.juzipi.inter.model.pojo.hospital.Department;
+import com.juzipi.inter.vo.hospital.DepartmentVo;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -36,4 +38,10 @@ public interface DepartmentService {
      */
     Integer removeDepartment(String hoCode, String depCode);
 
+    /**
+     * 根据id查询科室列表
+     * @param hpCode
+     * @return
+     */
+    List<DepartmentVo> queryDepartmentList(String hpCode);
 }

@@ -26,18 +26,8 @@ public class BaseController {
      * @param data Object
      * @return Result
      */
-    protected Result judgmentResultData(Object data){
+    protected Result judgmentResult(Object data){
         return StringUtils.isNotNull(data) ? ResultTools.successData(data) : ResultTools.fail();
-    }
-
-
-    /**
-     * 判断对象，成功无返回值
-     * @param object
-     * @return
-     */
-    protected Result judgmentResult(Object object){
-        return StringUtils.isNotNull(object) ? ResultTools.success() : ResultTools.fail();
     }
 
 

@@ -1,5 +1,7 @@
 package com.juzipi.hospital.service;
 
+import com.github.pagehelper.PageInfo;
+import com.juzipi.inter.model.mode.PageBody;
 import com.juzipi.inter.model.pojo.hospital.Schedule;
 import org.springframework.data.domain.Page;
 
@@ -21,4 +23,5 @@ public interface ScheduleService {
 
     Integer removeSchedule(String hpCode, String hpScheduleId);
 
+    PageInfo<Schedule> queryPageScheduleRule(Integer pageNum, Integer pageSize, String hpCode, String depCode);
 }

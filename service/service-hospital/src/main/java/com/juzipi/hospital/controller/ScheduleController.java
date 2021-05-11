@@ -1,18 +1,23 @@
 package com.juzipi.hospital.controller;
 
+import com.juzipi.commonutil.tool.Result;
 import com.juzipi.hospital.service.ScheduleService;
+import com.juzipi.inter.model.mode.PageBody;
 import com.juzipi.serviceutil.core.BaseController;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Author juzipi
  * @Date 2021/5/6 14:25
  * @Info
  */
+@Api(tags = "日程管理")
 @RestController
-@RequestMapping
+@RequestMapping("admin/schedule")
+@CrossOrigin
 public class ScheduleController extends BaseController {
 
 
@@ -20,5 +25,15 @@ public class ScheduleController extends BaseController {
     private ScheduleService scheduleService;
 
 
+    @ApiOperation("查询排班规则数据")
+    @PostMapping("getScheduleRule/{pageNum}/{pageSize}/{hpCode}/{depCode}")
+    public Result getScheduleRule(
+            @PathVariable Integer pageNum,
+            @PathVariable Integer pageSize,
+            @PathVariable String hpCode,
+            @PathVariable String depCode
+                                  ){
+        scheduleService.queryPageScheduleRule(pageNum,pageSize,hpCode,depCode);
+    }
 
 }
