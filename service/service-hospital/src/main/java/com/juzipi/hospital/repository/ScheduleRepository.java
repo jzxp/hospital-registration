@@ -1,8 +1,10 @@
 package com.juzipi.hospital.repository;
 
 import com.juzipi.inter.model.pojo.hospital.Schedule;
+import org.joda.time.DateTime;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -16,5 +18,6 @@ public interface ScheduleRepository extends MongoRepository<Schedule, String> {
 
     List<Schedule> queryByHpCodeAndDepCode(String hpCode,String depCode);
 
+    List<Schedule> queryByHpCodeAndDepCodeAndWorkDate(String hpCode,String depCode, DateTime workDate);
 
 }

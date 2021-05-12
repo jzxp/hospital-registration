@@ -42,4 +42,8 @@ public interface HospitalService {
     Hospital updateHospitalStatus(String id, Integer status);
 
     Hospital getHospitalById(String id);
+
+    Hospital getHospitalByhpCode(String hpCode);
+
+
 }

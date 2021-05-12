@@ -5,6 +5,7 @@ import com.juzipi.inter.model.mode.PageBody;
 import com.juzipi.inter.model.pojo.hospital.Schedule;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,5 +24,10 @@ public interface ScheduleService {
 
     Integer removeSchedule(String hpCode, String hpScheduleId);
 
+
     Map<String, Object> queryPageScheduleRule(Integer pageNum, Integer pageSize, String hpCode, String depCode);
+
+
+    List<Schedule> getScheduleDetails(String hpCode, String depCode, String workDate);
+
 }

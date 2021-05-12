@@ -44,4 +44,7 @@ public interface DepartmentService {
      * @return
      */
     List<DepartmentVo> queryDepartmentList(String hpCode);
+
+
+    Department getDepartment(String depCode);
 }

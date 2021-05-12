@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -38,5 +39,13 @@ public class ScheduleController extends BaseController {
         Map<String, Object> map = scheduleService.queryPageScheduleRule(pageNum, pageSize, hpCode, depCode);
         return judgmentResult(map);
     }
+
+
+    @ApiOperation("查询排班的详情信息")
+    @GetMapping("getScheduleDetail/{hpCode}/{depCode}/{workDate}")
+    public Result getSchedule(@PathVariable String hpCode, @PathVariable String depCode, @PathVariable String workDate){
+        return judgmentResult(scheduleService.getScheduleDetails(hpCode, depCode, workDate));
+    }
+
 
 }

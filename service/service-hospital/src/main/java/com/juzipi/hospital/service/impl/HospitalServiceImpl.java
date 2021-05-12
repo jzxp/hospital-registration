@@ -125,7 +125,15 @@ public class HospitalServiceImpl implements HospitalService {
     public Hospital getHospitalById(String id) {
         //查询出基本信息，然后再调用setHospitalHpType方法加入其他一些信息
         return this.setHospitalHpType(hospitalRepository.queryById(id));
+
     }
+
+
+    @Override
+    public Hospital getHospitalByhpCode(String hpCode) {
+        return hospitalRepository.queryHospitalByHpCode(hpCode);
+    }
+
 
 
     /**

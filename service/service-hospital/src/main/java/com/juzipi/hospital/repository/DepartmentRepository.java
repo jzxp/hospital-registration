@@ -18,4 +18,5 @@ public interface DepartmentRepository extends MongoRepository<Department, String
 
     List<Department> queryDepartmentByHpCode(String hpCode);
 
+    Department queryDepartmentByDepCode(String depCode);
 }

@@ -118,6 +118,17 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
 
+
+    @Override
+    public Department getDepartment(String depCode) {
+        Department department = departmentRepository.queryDepartmentByDepCode(depCode);
+        if (StringUtils.isNull(department)){
+            return null;
+        }
+        return department;
+    }
+
+
     /**
      * 根据hpCode和depCode判断 department 是否存在
      * @param hpCode
