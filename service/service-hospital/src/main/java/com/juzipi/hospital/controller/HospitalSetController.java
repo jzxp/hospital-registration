@@ -21,7 +21,7 @@ import java.util.List;
  */
 @Api(tags = "医院设置管理")
 @RestController
-@RequestMapping("admin/hospitalSet")
+@RequestMapping("admin/hospital/hospitalSet")
 public class HospitalSetController extends BaseController {
 
     @Autowired

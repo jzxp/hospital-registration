@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Api(tags = "字典管理")
 @RestController
-@RequestMapping("admin/dict")
+@RequestMapping("admin/dictionary/dict")
 public class DictController extends BaseController {
 
 

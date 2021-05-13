@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Api(tags = "科室信息")
 @RestController
-@RequestMapping("admin/department")
+@RequestMapping("admin/hospital/department")
 public class DepartmentController extends BaseController {
 
 

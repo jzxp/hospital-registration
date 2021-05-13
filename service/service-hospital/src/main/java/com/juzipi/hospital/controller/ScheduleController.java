@@ -19,8 +19,7 @@ import java.util.Map;
  */
 @Api(tags = "日程管理")
 @RestController
-@RequestMapping("admin/schedule")
-@CrossOrigin
+@RequestMapping("admin/hospital/schedule")
 public class ScheduleController extends BaseController {
 
 
@@ -46,6 +45,9 @@ public class ScheduleController extends BaseController {
     public Result getSchedule(@PathVariable String hpCode, @PathVariable String depCode, @PathVariable String workDate){
         return judgmentResult(scheduleService.getScheduleDetails(hpCode, depCode, workDate));
     }
+
+
+
 
 
 }

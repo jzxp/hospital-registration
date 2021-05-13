@@ -17,8 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(tags = "医院管理")
 @RestController
-@RequestMapping("admin/hospital")
-@CrossOrigin
+@RequestMapping("admin/hospital/hospital")
 public class HospitalController extends BaseController {
 
 
