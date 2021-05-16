@@ -23,10 +23,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @Author juzipi
@@ -120,20 +117,38 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
 
-
     @Override
     public Hospital getHospitalById(String id) {
         //查询出基本信息，然后再调用setHospitalHpType方法加入其他一些信息
         return this.setHospitalHpType(hospitalRepository.queryById(id));
-
     }
 
 
     @Override
-    public Hospital getHospitalByhpCode(String hpCode) {
+    public Hospital getHospitalByHpCode(String hpCode) {
         return hospitalRepository.queryHospitalByHpCode(hpCode);
     }
 
+
+
+    @Override
+    public List<Hospital> queryHospitalByLikeHpName(String hpName) {
+        return hospitalRepository.queryHospitalByHpNameLike(hpName);
+    }
+
+
+    @Override
+    public Map<String, Object> getReservation(String hpCode) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        //调用的都是之前的写的方法了
+        Hospital hospital = this.getHospitalByHpCode(hpCode);
+        Hospital hospitalHpType = this.setHospitalHpType(hospital);
+        hashMap.put("hospital", hospitalHpType);
+        hashMap.put("bookingRule", hospitalHpType.getBookingRule());
+        //不需要重复返回？没看太懂
+        hospitalHpType.setBookingRule(null);
+        return hashMap;
+    }
 
 
     /**

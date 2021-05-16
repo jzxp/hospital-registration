@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @Api(tags = "医院管理")
 @RestController
-@RequestMapping("admin/hospital/hospital")
+@RequestMapping("admin/hospital/hospitalSet")
 public class HospitalController extends BaseController {
 
 

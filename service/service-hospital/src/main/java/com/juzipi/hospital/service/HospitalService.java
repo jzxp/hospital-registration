@@ -5,6 +5,7 @@ import com.juzipi.inter.model.mode.PageBody;
 import com.juzipi.inter.model.pojo.hospital.Hospital;
 import com.juzipi.inter.vo.hospital.HospitalSelectVo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,7 +44,10 @@ public interface HospitalService {
 
     Hospital getHospitalById(String id);
 
-    Hospital getHospitalByhpCode(String hpCode);
+    Hospital getHospitalByHpCode(String hpCode);
 
 
+    List<Hospital> queryHospitalByLikeHpName(String hpName);
+
+    Map<String, Object> getReservation(String hpCode);
 }
