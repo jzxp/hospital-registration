@@ -20,11 +20,11 @@ public class ConstantsMp {
     /**
      * hospitalSet表
      */
-    public static final String STATUS = "status";
+    public static final String HOSPITAL_SET_STATUS = "status";
 
-    public static final Integer STATUS_VALUE = 1;//状态码,1启用,0禁用
+    public static final Integer HOSPITAL_SET_STATUS_VALUE = 1;//状态码,1启用,0禁用
 
-    public static final String SIGN_KEY = "signKey";//签名密钥
+    public static final String HOSPITAL_SET_SIGN_KEY = "signKey";//签名密钥
 
 
     /**
@@ -37,5 +37,15 @@ public class ConstantsMp {
      * schedule表（mongo）
      */
     public static final Integer SCHEDULE_STATUS_VALUE_MONGO = 1;//状态：-1停诊，0停约，1空闲
+
+
+    /**
+     * userinfo表
+     */
+
+    public static final String USER_INFO_STATUS = "status";
+
+    public static final Integer USER_INFO_STATUS_VALUE = 1;//默认1：正常
+
 
 }

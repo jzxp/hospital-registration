@@ -1,7 +1,7 @@
 package com.juzipi.user.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.juzipi.inter.model.user.UserInfo;
+import com.juzipi.inter.model.pojo.user.UserInfo;
 
 /**
  * @Author juzipi
@@ -9,4 +9,8 @@ import com.juzipi.inter.model.user.UserInfo;
  * @Info
  */
 public interface UserInfoMapper extends BaseMapper<UserInfo> {
+
+
+    Integer register(String phoneNumber);
+
 }

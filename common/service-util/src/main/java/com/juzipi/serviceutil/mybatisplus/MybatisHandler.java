@@ -36,9 +36,16 @@ public class MybatisHandler implements MetaObjectHandler {
          * hospitalSet表的
          */
         //默认默认状态
-        this.setFieldValByName(ConstantsMp.STATUS,ConstantsMp.STATUS_VALUE,metaObject);
+        this.setFieldValByName(ConstantsMp.HOSPITAL_SET_STATUS,ConstantsMp.HOSPITAL_SET_STATUS_VALUE,metaObject);
         //设置签名密钥
-        this.setFieldValByName(ConstantsMp.SIGN_KEY, MD5.getSign(),metaObject);
+        this.setFieldValByName(ConstantsMp.HOSPITAL_SET_SIGN_KEY, MD5.getSign(),metaObject);
+
+
+        /**
+         * user表
+         */
+//        this.setFieldValByName(ConstantsMp.USER_INFO_STATUS, ConstantsMp.USER_INFO_STATUS_VALUE,metaObject);
+
 
     }
 

@@ -1,10 +1,11 @@
 package com.juzipi.user.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.juzipi.commonutil.exception.BaseException;
 import com.juzipi.commonutil.util.StringUtils;
 import com.juzipi.inter.model.mode.LoginBody;
-import com.juzipi.inter.model.user.UserInfo;
+import com.juzipi.inter.model.pojo.user.UserInfo;
 import com.juzipi.inter.vo.user.UserInfoVo;
 import com.juzipi.user.mapper.UserInfoMapper;
 import com.juzipi.user.service.UserInfoService;
@@ -28,7 +29,13 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
             throw new BaseException(this.getClass().getName(),403,loginBody,"手机号或验证码为空");
         }
         //判断是否是第一次登录
-
+        UserInfo userInfo = baseMapper.selectOne(new QueryWrapper<UserInfo>().lambda().eq(UserInfo::getPhoneNumber, phoneNumber));
+        if (StringUtils.isNull(userInfo)){
+            Integer register = baseMapper.register(phoneNumber);
+        }
+        if (userInfo.getStatus() == 0){
+            throw new BaseException(this.getClass().getName(),403,loginBody,"账号已被禁用");
+        }
 
         //登录
 

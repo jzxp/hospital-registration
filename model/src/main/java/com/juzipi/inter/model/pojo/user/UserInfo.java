@@ -1,5 +1,7 @@
-package com.juzipi.inter.model.user;
+package com.juzipi.inter.model.pojo.user;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.juzipi.inter.model.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
@@ -8,7 +10,7 @@ import lombok.Data;
 
 /**
  * @Author juzipi
- * @Date 2021/5/17 16:54
+ * @Date 2021/5/17 18:28
  * @Info
  */
 @ApiModel(value = "用户表")
@@ -44,6 +46,7 @@ public class UserInfo extends BaseEntity {
     private Integer authStatus;
 
     @ApiModelProperty(value = "状态")
+//    @TableField(fill = FieldFill.INSERT)
     private Integer status;
 
 }

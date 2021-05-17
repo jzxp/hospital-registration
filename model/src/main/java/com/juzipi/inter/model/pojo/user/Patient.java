@@ -1,4 +1,4 @@
-package com.juzipi.inter.model.user;
+package com.juzipi.inter.model.pojo.user;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.juzipi.inter.model.base.BaseEntity;
@@ -10,7 +10,7 @@ import java.util.Date;
 
 /**
  * @Author juzipi
- * @Date 2021/5/17 17:24
+ * @Date 2021/5/17 18:29
  * @Info
  */
 @Data
@@ -77,6 +77,5 @@ public class Patient extends BaseEntity {
 
     @ApiModelProperty(value = "状态")
     private Integer status;
-
 
 }
