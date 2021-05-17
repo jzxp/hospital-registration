@@ -139,7 +139,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         resultMap.put("bookingScheduleRuleList",bookingScheduleRuleVos);
         resultMap.put("total",total);
         //获取医院名称
-        Hospital hospital = hospitalService.getHospitalByhpCode(hpCode);
+        Hospital hospital = hospitalService.getHospitalByHpCode(hpCode);
         if (StringUtils.isNull(hospital)){
             return null;
         }
@@ -214,7 +214,7 @@ public class ScheduleServiceImpl implements ScheduleService {
      */
     private Map<String, Object> setScheduleInfo(Schedule schedule){
         Map<String, Object> scheduleParam = schedule.getParam();
-        scheduleParam.put("hpName",hospitalService.getHospitalByhpCode(schedule.getHpCode()).getHpName());
+        scheduleParam.put("hpName",hospitalService.getHospitalByHpCode(schedule.getHpCode()).getHpName());
         scheduleParam.put("depName",departmentService.getDepartment(schedule.getDepCode()).getDepName());
         scheduleParam.put("dayOfWeek",this.dateToWeek(schedule.getWorkDate().toString()));
         return scheduleParam;

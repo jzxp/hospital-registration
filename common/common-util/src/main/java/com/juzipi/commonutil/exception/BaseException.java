@@ -1,7 +1,5 @@
 package com.juzipi.commonutil.exception;
 
-import com.juzipi.commonutil.tool.ResultCode;
-
 /**
  * @Author juzipi
  * @Date 2021/4/29 9:55
