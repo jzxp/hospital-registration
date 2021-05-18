@@ -16,7 +16,7 @@ public class LoginBody {
     //手机号
     private String phoneNumber;
 
-    //尼玛
+    //验证码
     private String code;
 
     //ip

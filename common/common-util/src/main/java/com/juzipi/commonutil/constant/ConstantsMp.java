@@ -42,10 +42,10 @@ public class ConstantsMp {
     /**
      * userinfo表
      */
+    public static final String USER_INFO_NICKNAME = "nickname";
+
 
     public static final String USER_INFO_STATUS = "status";
 
-    public static final Integer USER_INFO_STATUS_VALUE = 1;//默认1：正常
-
-
+    public static final Object USER_INFO_STATUS_VALUE = 1;//0锁定，1正常
 }

@@ -26,7 +26,7 @@ public class UserController extends BaseController {
 
     @PostMapping("login")
     public Result login(@RequestBody LoginBody loginBody){
-        userInfoService.login(loginBody);
+        return judgmentResult(userInfoService.login(loginBody));
     }
 
 

@@ -11,7 +11,6 @@ import org.springframework.context.annotation.ComponentScan;
  * @Info
  */
 @SpringBootApplication
-@ComponentScan("com.juzipi")
 @MapperScan("com.juzipi.user.mapper")
 public class ServiceUserApplication {
 

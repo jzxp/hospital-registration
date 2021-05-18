@@ -20,19 +20,14 @@
         <result property="deleted" column="deleted"/>
     </resultMap>
 
+<!--    mp的自动填充，不需要在这写字段插入也可以填充，只要配置了就不用管了-->
     <insert id="register" parameterType="Integer">
         insert into user_info(
-            <if test="id != null">id</if>
-            <if test="phoneNumber != null">phoneNumber</if>
-            <if test="createTime != null">createTime</if>
-            <if test="updateTime != null">updateTime</if>
-            <if test="deleted != null">deleted</if>
+            id,
+            <if test="phoneNumber != null">phone_number</if>
         ) values (
-            <if test="id != null">#{id}</if>
+            #{id},
             <if test="phoneNumber != null">#{phoneNumber}</if>
-            <if test="createTime != null">#{createTime}</if>
-            <if test="updateTime != null">#{updateTime}</if>
-            <if test="deleted != null">#{deleted}</if>
         )
     </insert>
 
