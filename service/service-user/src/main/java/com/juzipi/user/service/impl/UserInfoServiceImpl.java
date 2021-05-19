@@ -7,11 +7,14 @@ import com.juzipi.commonutil.util.JwtUtils;
 import com.juzipi.commonutil.util.StringUtils;
 import com.juzipi.inter.model.mode.LoginBody;
 import com.juzipi.inter.model.pojo.user.UserInfo;
+import com.juzipi.serviceutil.util.RedisUtils;
 import com.juzipi.user.mapper.UserInfoMapper;
 import com.juzipi.user.service.UserInfoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * @Author juzipi
@@ -22,6 +25,9 @@ import java.util.HashMap;
 public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> implements UserInfoService {
 
 
+    @Autowired
+    private RedisUtils redisUtils;
+
     @Override
     public HashMap<String, Object> login(LoginBody loginBody) {
         //判断手机号验证码
@@ -30,6 +36,11 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         if (StringUtils.isEmpty(phoneNumber) || StringUtils.isEmpty(code)){
             throw new BaseException(this.getClass().getName(),403,loginBody,"手机号或验证码为空");
         }
+        String captcha = redisUtils.getCacheObject(loginBody.getPhoneNumber()).toString();
+        if (!Objects.equals(loginBody.getCode(), captcha)){
+            throw new BaseException("验证码错误");
+        }
+
         //判断是否是第一次登录
         UserInfo userInfo = baseMapper.selectOne(new QueryWrapper<UserInfo>().lambda().eq(UserInfo::getPhoneNumber, phoneNumber));
         if (StringUtils.isNull(userInfo)){
