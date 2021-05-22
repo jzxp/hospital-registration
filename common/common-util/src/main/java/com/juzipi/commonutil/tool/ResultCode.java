@@ -51,7 +51,6 @@ public enum ResultCode {
 
     //服务器错误
     ERROR(500,"服务器报错啦,这是错误信息")
-
     ;
 
 
