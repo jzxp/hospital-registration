@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @Date 2021/5/17 16:49
  * @Info
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = {"com.juzipi"})
 @MapperScan("com.juzipi.user.mapper")
 public class ServiceUserApplication {
 

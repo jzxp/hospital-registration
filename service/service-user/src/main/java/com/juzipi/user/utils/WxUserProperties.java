@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * @Info
  */
 @Component
-public class UserProperties implements InitializingBean {
+public class WxUserProperties implements InitializingBean {
 
     @Value("${wx.open.app_id}")
     private String appId;
