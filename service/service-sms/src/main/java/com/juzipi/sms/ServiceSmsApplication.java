@@ -10,7 +10,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
  * @Date 2021/5/19 18:11
  * @Info
  */
-@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
+@SpringBootApplication(exclude = DataSourceAutoConfiguration.class,scanBasePackages = "com.juzipi")
 @EnableDiscoveryClient
 public class ServiceSmsApplication {
 

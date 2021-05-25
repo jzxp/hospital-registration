@@ -29,6 +29,8 @@ public class SmsProperties implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-
+        REGION_ID = this.regionId;
+        ACCESS_KEY_ID = this.accessKeyId;
+        SECRET = this.secret;
     }
 }

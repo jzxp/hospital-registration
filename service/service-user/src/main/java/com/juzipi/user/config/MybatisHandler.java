@@ -31,6 +31,7 @@ public class MybatisHandler implements MetaObjectHandler {
     @Override
     public void updateFill(MetaObject metaObject) {
 
+        //更新
         this.setFieldValByName(ConstantsMp.UPDATE_TIME,new Date(),metaObject);
 
     }

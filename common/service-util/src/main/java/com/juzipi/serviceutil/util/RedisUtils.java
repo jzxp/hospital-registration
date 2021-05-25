@@ -1,7 +1,6 @@
 package com.juzipi.serviceutil.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
@@ -71,6 +70,17 @@ public class RedisUtils {
         ValueOperations<String, T> operation = redisTemplate.opsForValue();
         return operation.get(key);
     }
+
+
+    /**
+     * 根据key获取值
+     * @param key
+     * @return
+     */
+    public Boolean checkKeyExists(final String key){
+        return redisTemplate.hasKey(key);
+    }
+
 
     /**
      * 删除单个对象

@@ -23,7 +23,6 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import java.lang.reflect.Method;
 import java.time.Duration;
 
 /**
@@ -55,11 +54,8 @@ public class RedisConfig {
     }
 
     /**
-
      * 设置RedisTemplate规则
-
      * @param redisConnectionFactory
-
      * @return
      */
     @Bean
@@ -87,11 +83,8 @@ public class RedisConfig {
     }
 
     /**
-
      * 设置CacheManager缓存规则
-
      * @param factory
-
      * @return
      */
     @Bean

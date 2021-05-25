@@ -9,7 +9,6 @@ import com.juzipi.serviceutil.util.RedisUtils;
 import com.juzipi.sms.service.SmsService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,10 +36,10 @@ public class SmsController extends BaseController {
     @GetMapping("send/{phoneNumber}")
     public Result getCode(@PathVariable String phoneNumber){
         //根据手机号（key）获取验证码
-        String code = redisUtils.getCacheObject(phoneNumber).toString();
-        if (StringUtils.isNotEmpty(code)){
+        if (redisUtils.checkKeyExists(phoneNumber)){
             return ResultTools.success();
         }
+        //不存在就发送6位验证码
         String captcha6 = CaptchaUtils.getCaptcha6();
         if (smsService.sendCode(phoneNumber,captcha6)){
             redisUtils.setCacheObject(phoneNumber,captcha6,5, TimeUnit.MINUTES);

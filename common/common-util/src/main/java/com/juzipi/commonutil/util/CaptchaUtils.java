@@ -15,7 +15,8 @@ public class CaptchaUtils {
      * @return 验证码
      */
     public static String getCaptcha6(){
-        return captcha(6);
+        return "Hello";
+//        return captcha(6);
     }
 
     /**

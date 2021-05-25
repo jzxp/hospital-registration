@@ -17,4 +17,7 @@ public interface UserInfoService extends IService<UserInfo> {
     HashMap<String, Object> login(LoginBody loginBody);
 
 
+    Integer insertUserInfo(String nickname, String openid);
+
+    UserInfo checkWxUserExist(String openid);
 }

@@ -6,7 +6,6 @@ import com.juzipi.hospital.service.HospitalService;
 import com.juzipi.inter.model.mode.PageBody;
 import com.juzipi.inter.vo.hospital.HospitalSelectVo;
 import com.juzipi.serviceutil.core.BaseController;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +27,7 @@ public class HospitalApiController extends BaseController {
 
 
     @ApiOperation("查询医院列表")
-    @PostMapping("")
+    @PostMapping("getPage")
     public Result getHospitalPage(@RequestBody PageBody pageBody, HospitalSelectVo hospitalSelectVo){
         return pageResult(hospitalService.queryHospitalPage(pageBody, hospitalSelectVo));
     }

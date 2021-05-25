@@ -6,7 +6,6 @@ import com.aliyuncs.CommonResponse;
 import com.aliyuncs.DefaultAcsClient;
 import com.aliyuncs.IAcsClient;
 import com.aliyuncs.exceptions.ClientException;
-import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
 import com.juzipi.sms.service.SmsService;
@@ -27,7 +26,8 @@ public class SmsServiceImpl implements SmsService {
     @Override
     public Boolean sendCode(String phoneNumber, String captcha6) {
         DefaultProfile profile = DefaultProfile.
-                getProfile(SmsProperties.REGION_ID,
+                getProfile(
+                        "default",
                         SmsProperties.ACCESS_KEY_ID,
                         SmsProperties.SECRET);
         IAcsClient client = new DefaultAcsClient(profile);
@@ -41,9 +41,9 @@ public class SmsServiceImpl implements SmsService {
         //手机号
         request.putQueryParameter("PhoneNumbers", phoneNumber);
         //签名名称
-        request.putQueryParameter("SignName", "一约通");
+        request.putQueryParameter("SignName", "jzpx的学习记录网站");
         //模板code
-        request.putQueryParameter("TemplateCode", "SMS_180051135");
+        request.putQueryParameter("TemplateCode", "SMS_217416866");
 
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("code",captcha6);

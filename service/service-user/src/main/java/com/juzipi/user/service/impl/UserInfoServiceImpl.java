@@ -41,8 +41,18 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
             throw new BaseException("验证码错误");
         }
 
-        //判断是否是第一次登录
-        UserInfo userInfo = baseMapper.selectOne(new QueryWrapper<UserInfo>().lambda().eq(UserInfo::getPhoneNumber, phoneNumber));
+        //绑定手机号
+        UserInfo userInfo = null;
+        if (StringUtils.isNotEmpty(loginBody.getOpenid())){
+            //如果用户不为空绑定手机号
+            userInfo = this.checkWxUserExist(loginBody.getOpenid());
+            if (StringUtils.isNotNull(userInfo)){
+                userInfo.setPhoneNumber(loginBody.getPhoneNumber());
+                baseMapper.updateById(userInfo);
+            }
+        }
+
+        //判断是否是第一次登录,为空进行正常登录
         if (StringUtils.isNull(userInfo)){
             userInfo = new UserInfo();
             userInfo.setPhoneNumber(phoneNumber);
@@ -68,5 +78,19 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
 
         //返回部分信息
         return hashMap;
+    }
+
+    @Override
+    public Integer insertUserInfo(String nickname, String openid) {
+        UserInfo userInfo = new UserInfo();
+        userInfo.setNickname(nickname);
+        userInfo.setOpenid(openid);
+        return baseMapper.insert(userInfo);
+    }
+
+
+    @Override
+    public UserInfo checkWxUserExist(String openid) {
+        return baseMapper.selectOne(new QueryWrapper<UserInfo>().lambda().eq(UserInfo::getOpenid, openid));
     }
 }

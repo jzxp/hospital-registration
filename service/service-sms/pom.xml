@@ -17,6 +17,7 @@
     </properties>
 
     <dependencies>
+<!--        升级版的不会用，还是算了把-->
         <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-core</artifactId>
