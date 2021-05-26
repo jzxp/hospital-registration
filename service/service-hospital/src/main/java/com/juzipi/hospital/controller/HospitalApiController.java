@@ -28,7 +28,7 @@ public class HospitalApiController extends BaseController {
 
     @ApiOperation("查询医院列表")
     @PostMapping("getPage")
-    public Result getHospitalPage(@RequestBody PageBody pageBody, HospitalSelectVo hospitalSelectVo){
+    public Result getHospitalPage( @RequestBody PageBody pageBody,HospitalSelectVo hospitalSelectVo){
         return pageResult(hospitalService.queryHospitalPage(pageBody, hospitalSelectVo));
     }
 

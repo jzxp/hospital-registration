@@ -107,7 +107,6 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
 
-
     @Override
     public Hospital updateHospitalStatus(String id, Integer status) {
         Hospital hospital = hospitalRepository.queryById(id);
