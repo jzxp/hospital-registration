@@ -25,7 +25,8 @@
 
         <tr>
             <th width="15%">医院名称</th>
-            <td width="35%"><b style="font-size: 14px" th:text="${hospital.hpName}"></b> | <span
+            <td width="35%"><b style="font-size: 14px" th:text="${hospital.hpName}"></b> | <!--/*@thymesVar id="hpType" type=""*/-->
+            <span
                     th:text="'医院等级编号：'+${ hospital.hpType}"></span></td>
             <th width="15%">医院logo</th>
             <td width="35%"><img th:src="${'data:image/jpeg;base64,'+(hospital.logoData)}" width="80"></td>

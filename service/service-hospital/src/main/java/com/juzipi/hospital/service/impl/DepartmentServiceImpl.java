@@ -74,6 +74,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         department.setUpdateTime(new Date());//设置更新时间
         Department save = departmentRepository.save(department);
         Department departmentExists = checkDepartmentExists(save.getHpCode(), save.getHpCode());
+        //应该是查不到了
         if (Objects.equals(departmentExists.getDeleted(), MongoConstants.DELETED_VALUE_TRUE)){
             return 1;
         }

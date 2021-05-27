@@ -91,15 +91,17 @@ public class HospitalServiceImpl implements HospitalService {
 
     @Override
     public PageInfo<Hospital> queryHospitalPage(PageBody pageBody, HospitalSelectVo hospitalSelectVo) {
-        //分页
-        PageHelper.startPage(pageBody.getPageNum().intValue(), pageBody.getPageSize().intValue());
         //条件匹配器
         ExampleMatcher exampleMatcher = ExampleMatcher.matching().withStringMatcher(ExampleMatcher.StringMatcher.CONTAINING);
         Hospital hospital = new Hospital();
         //把hospitalSelectVo里的值复制到hospital里
         BeanUtils.copyProperties(hospitalSelectVo, hospital);
+        //分页
+        PageHelper.startPage(pageBody.getPageNum().intValue(), pageBody.getPageSize().intValue());
         List<Hospital> hospitals = hospitalRepository.findAll(Example.of(hospital, exampleMatcher));
+        hospitals.forEach(System.out::println);
         PageInfo<Hospital> hospitalPageInfo = new PageInfo<>(hospitals);
+        System.out.println(hospitalPageInfo.getList());
         //远程调用查询dictName接口查询出医院等级
         hospitalPageInfo.getList().forEach(this::setHospitalHpType);
 
@@ -170,12 +172,16 @@ public class HospitalServiceImpl implements HospitalService {
             return null;
         }
         Result hpType = dictFeignClient.getName(hospital.getHpType());
+//        String dictName = dictFeignClient.getName(hospital.getHpType());
         //设置进hospital的param（map）字段里，键是hpType,值就是查出来的dictName
         hospital.getParam().put(MongoConstants.HP_TYPE, hpType.getData().toString());
         //查询省，市，地区
         Result provinceCode = dictFeignClient.getName(hospital.getProvinceCode());
         Result cityCode = dictFeignClient.getName(hospital.getCityCode());
         Result districtCode = dictFeignClient.getName(hospital.getDistrictCode());
+//        String provinceCode = dictFeignClient.getName(hospital.getProvinceCode());
+//        String cityCode = dictFeignClient.getName(hospital.getCityCode());
+//        String districtCode = dictFeignClient.getName(hospital.getDistrictCode());
         hospital.getParam().put(MongoConstants.FULL_ADDRESS,
                 provinceCode.getData().toString() + cityCode.getData().toString() + districtCode.getData().toString());
         return hospital;
