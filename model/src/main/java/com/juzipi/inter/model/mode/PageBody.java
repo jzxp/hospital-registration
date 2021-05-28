@@ -23,6 +23,9 @@ public class PageBody {
     @ApiModelProperty(value = "页面大小")
     private Long pageSize;
 
-
-
+    public PageBody(String key, Long pageNum, Long pageSize) {
+        this.key = key;
+        this.pageNum = 1L;
+        this.pageSize = 10L;
+    }
 }
