@@ -8,8 +8,8 @@ import com.aliyuncs.IAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
+import com.juzipi.serviceutil.properties.SmsProperties;
 import com.juzipi.sms.service.SmsService;
-import com.juzipi.sms.utils.SmsProperties;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;

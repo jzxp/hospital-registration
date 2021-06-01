@@ -2,11 +2,13 @@ package com.juzipi.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.juzipi.commonutil.constant.UserConstants;
 import com.juzipi.commonutil.exception.BaseException;
 import com.juzipi.commonutil.util.JwtUtils;
 import com.juzipi.commonutil.util.StringUtils;
 import com.juzipi.inter.model.mode.LoginBody;
 import com.juzipi.inter.model.pojo.user.UserInfo;
+import com.juzipi.inter.vo.user.UserAuthVo;
 import com.juzipi.serviceutil.util.RedisUtils;
 import com.juzipi.user.mapper.UserInfoMapper;
 import com.juzipi.user.service.UserInfoService;
@@ -92,5 +94,18 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
     @Override
     public UserInfo checkWxUserExist(String openid) {
         return baseMapper.selectOne(new QueryWrapper<UserInfo>().lambda().eq(UserInfo::getOpenid, openid));
+    }
+
+
+
+    @Override
+    public Integer auth(Long userId, UserAuthVo userAuthVo) {
+        UserInfo userInfo = baseMapper.selectById(userId);
+        userInfo.setName(userAuthVo.getName());
+        userInfo.setCertificatesNo(userAuthVo.getCertificatesNo());
+        userInfo.setCertificatesType(userAuthVo.getCertificatesType());
+        userInfo.setCertificatesUrl(userAuthVo.getCertificatesUrl());
+        userInfo.setAuthStatus(UserConstants.USER_STATUS_ON);
+        return baseMapper.updateById(userInfo);
     }
 }

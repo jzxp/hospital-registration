@@ -1,15 +1,13 @@
-package com.juzipi.sms.utils;
+package com.juzipi.serviceutil.properties;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 /**
  * @Author juzipi
  * @Date 2021/5/19 18:16
  * @Info
  */
-@Component
 public class SmsProperties implements InitializingBean {
 
     @Value("${aliyun.sms.regionId}")
