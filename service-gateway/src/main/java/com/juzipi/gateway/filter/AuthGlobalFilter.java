@@ -19,6 +19,7 @@ import reactor.core.publisher.Mono;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @Author juzipi
@@ -46,7 +47,7 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
 
         //api接口，异步请求，校验用户必须登录
         if(antPathMatcher.match("/api/**/auth/**", path)) {
-            String userId = this.getUserId(request).toString();
+            String userId = Objects.requireNonNull(this.getUserId(request)).toString();
             if(StringUtils.isEmpty(userId)) {
                 ServerHttpResponse response = exchange.getResponse();
                 return out(response, ResultCode.USER_NOT_LOGIN);

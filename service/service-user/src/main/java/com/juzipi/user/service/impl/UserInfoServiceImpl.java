@@ -2,13 +2,17 @@ package com.juzipi.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.juzipi.commonutil.constant.UserConstants;
 import com.juzipi.commonutil.exception.BaseException;
 import com.juzipi.commonutil.util.JwtUtils;
 import com.juzipi.commonutil.util.StringUtils;
+import com.juzipi.commonutil.util.conversion.UserInfoAuthStatusConversion;
 import com.juzipi.inter.model.mode.LoginBody;
 import com.juzipi.inter.model.pojo.user.UserInfo;
 import com.juzipi.inter.vo.user.UserAuthVo;
+import com.juzipi.inter.vo.user.UserInfoSelectVo;
 import com.juzipi.serviceutil.util.RedisUtils;
 import com.juzipi.user.mapper.UserInfoMapper;
 import com.juzipi.user.service.UserInfoService;
@@ -16,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -108,4 +114,58 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
         userInfo.setAuthStatus(UserConstants.USER_STATUS_ON);
         return baseMapper.updateById(userInfo);
     }
+
+
+    @Override
+    public PageInfo<UserInfo> queryPage(Long pageNum, Long pageSize, UserInfoSelectVo userInfoSelectVo) {
+        //用户姓名
+        String name = userInfoSelectVo.getKeyword();
+        //用户状态
+        Integer status = userInfoSelectVo.getStatus();
+        //认证状态
+        Integer authStatus = userInfoSelectVo.getAuthStatus();
+        //开始时间
+        String createTimeBegin = userInfoSelectVo.getCreateTimeBegin();
+        //结束时间
+        String createTimeEnd = userInfoSelectVo.getCreateTimeEnd();
+        PageHelper.startPage(pageNum.intValue(),pageSize.intValue());
+        List<UserInfo> userInfos = baseMapper.selectList(new QueryWrapper<UserInfo>().lambda()
+                .like(UserInfo::getName, name)
+                .eq(UserInfo::getStatus, status)
+                .eq(UserInfo::getAuthStatus, authStatus)
+                .ge(UserInfo::getCreateTime, createTimeBegin)
+                .le(UserInfo::getCreateTime, createTimeEnd)
+        );
+        PageInfo<UserInfo> userInfoPageInfo = new PageInfo<>();
+        userInfoPageInfo.getList().forEach(this::setUserInfo);
+        return userInfoPageInfo;
+    }
+
+
+    @Override
+    public Integer lockUser(Long userId, Integer status) {
+        if (status == 0 || status == 1){
+            UserInfo userInfo = baseMapper.selectById(userId);
+            userInfo.setStatus(status);
+            return baseMapper.updateById(userInfo);
+        }
+        return 0;
+    }
+
+
+    @Override
+    public Map<String, Object> showUser(Long userId) {
+        HashMap<Object, Object> hashMap = new HashMap<>();
+    }
+
+
+    private UserInfo setUserInfo(UserInfo userInfo){
+        //认证状态转换
+        userInfo.getParam().put("authStatusString", UserInfoAuthStatusConversion.stateTransition(userInfo.getStatus()));
+        //用户状态
+        String statusString = userInfo.getStatus() == 0 ? "锁定" : "正常";
+        userInfo.getParam().put("statusString",statusString);
+        return userInfo;
+    }
+
 }
