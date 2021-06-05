@@ -45,7 +45,15 @@ public class UserController extends BaseController {
     @ApiOperation("用户详情")
     @GetMapping("show/{userId}")
     public Result showUser(@PathVariable Long userId){
-        userInfoService.showUser(userId);
+        return judgmentResult(userInfoService.showUser(userId));
     }
+
+
+    @ApiOperation("认证审批")
+    @GetMapping("approval/{userId}/{authStatus}")
+    public Result approval(@PathVariable Long userId,@PathVariable Integer authStatus){
+        return toResult(userInfoService.approval(userId, authStatus));
+    }
+
 
 }

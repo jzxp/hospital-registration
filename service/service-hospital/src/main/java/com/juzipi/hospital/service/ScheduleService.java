@@ -1,7 +1,5 @@
 package com.juzipi.hospital.service;
 
-import com.github.pagehelper.PageInfo;
-import com.juzipi.inter.model.mode.PageBody;
 import com.juzipi.inter.model.pojo.hospital.Schedule;
 import org.springframework.data.domain.Page;
 
@@ -30,4 +28,5 @@ public interface ScheduleService {
 
     List<Schedule> getScheduleDetails(String hpCode, String depCode, String workDate);
 
+    Map<String, Object> getBookingSchedulePage(Integer pageNum, Integer pageSize, String hpCode, String depCode);
 }

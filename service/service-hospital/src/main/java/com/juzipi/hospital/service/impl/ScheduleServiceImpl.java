@@ -1,16 +1,16 @@
 package com.juzipi.hospital.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.juzipi.commonutil.constant.ConstantsMp;
 import com.juzipi.commonutil.constant.MongoConstants;
 import com.juzipi.commonutil.exception.BaseException;
+import com.juzipi.commonutil.util.DateUtils;
 import com.juzipi.commonutil.util.StringUtils;
 import com.juzipi.hospital.repository.ScheduleRepository;
 import com.juzipi.hospital.service.DepartmentService;
 import com.juzipi.hospital.service.HospitalService;
 import com.juzipi.hospital.service.ScheduleService;
+import com.juzipi.inter.model.pojo.hospital.BookingRule;
 import com.juzipi.inter.model.pojo.hospital.Hospital;
 import com.juzipi.inter.model.pojo.hospital.Schedule;
 import com.juzipi.inter.vo.hospital.BookingScheduleRuleVo;
@@ -154,6 +154,81 @@ public class ScheduleServiceImpl implements ScheduleService {
         //设置其他值
         schedules.forEach(this::setScheduleInfo);
         return schedules;
+    }
+
+
+
+    @Override
+    public Map<String, Object> getBookingSchedulePage(Integer pageNum, Integer pageSize, String hpCode, String depCode) {
+        HashMap<String, Object> hashMap = new HashMap<>();
+        //获取预约规则
+        //根据医院编号获取预约规则
+        Hospital hospital = hospitalService.getHospitalById(hpCode);
+        if (StringUtils.isNull(hospital)){
+            throw new BaseException("医院为空");
+        }
+        BookingRule bookingRule = hospital.getBookingRule();
+
+        //获取可预约的日期的数据
+        com.baomidou.mybatisplus.extension.plugins.pagination.Page<Date> pageInfo = this.getDatePage(pageNum, pageSize, bookingRule);
+        //当前的可预约日期
+        List<Date> dateList = pageInfo.getRecords();
+        //获取可预约日期里科室的可预约数
+        Criteria criteria = Criteria.where("hpCode").is(hpCode).and("depCode").is(depCode).and("workDate").is(dateList);
+        Aggregation aggregation = Aggregation.newAggregation(Aggregation.match(criteria),
+                Aggregation.group("workDate").first("workDate").as("workDate")
+                        .count().as("docCount").sum("availableNumber").as("availableNumber")
+                        .sum("reservedNumber").as("reservedNumber"));
+        AggregationResults<BookingScheduleRuleVo> aggregationResults = mongoTemplate.aggregate(aggregation, Schedule.class, BookingScheduleRuleVo.class);
+        List<BookingScheduleRuleVo> scheduleVoList = aggregationResults.getMappedResults();
+
+        //合并数据返回map
+        Map<Date, Object> map = new HashMap<>();
+        if (StringUtils.isNotEmpty(map)){
+            //转换成map集合，key是workDate，value是 BookingScheduleRuleVo对象
+            map = scheduleVoList.stream().collect(Collectors.toMap(BookingScheduleRuleVo::getWorkDate, BookingScheduleRuleVO -> BookingScheduleRuleVO));
+        }
+        //获取可预约的排班规则
+        ArrayList<BookingScheduleRuleVo> bookingScheduleRuleVos = new ArrayList<>();
+        for (int i = 0; i < dateList.size(); i++) {
+            Date date = dateList.get(i);
+            //根据key获取value值
+
+        }
+
+    }
+
+
+
+    private com.baomidou.mybatisplus.extension.plugins.pagination.Page<Date> getDatePage(Integer pageNum, Integer pageSize, BookingRule bookingRule) {
+        //获取当天放号时间
+        DateTime datetime = DateUtils.getDatetime(new Date(), bookingRule.getReleaseTime());
+        //获取预约周期
+        Integer cycle = bookingRule.getCycle();
+        //当天放号时间过去后周期加一
+        if (datetime.isBeforeNow()) {
+            cycle += 1;
+        }
+        ArrayList<Date> dates = new ArrayList<>();
+        for (int i = 0; i < cycle; i++) {
+            DateTime dateTime = new DateTime().plusDays(i);
+            String dateString = dateTime.toString("yyyy-MM-dd");
+            dates.add(new DateTime(dateString).toDate());
+        }
+        ArrayList<Date> datePageList = new ArrayList<>();
+        //每页日期最多显示七条，超过就分页
+        int start = (pageNum-1) * pageSize;
+        int end = (pageNum-1) * pageSize + pageSize;
+        //小于七条就直接返回
+        if (end > dates.size()){
+            end = dates.size();
+        }
+        for (int i = start; i < end; i++) {
+            datePageList.add(dates.get(i));
+        }
+        com.baomidou.mybatisplus.extension.plugins.pagination.Page<Date> page = new com.baomidou.mybatisplus.extension.plugins.pagination.Page<>(pageNum, 7, dates.size());
+        page.setRecords(datePageList);
+        return page;
     }
 
 

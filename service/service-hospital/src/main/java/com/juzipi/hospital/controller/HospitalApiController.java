@@ -3,10 +3,12 @@ package com.juzipi.hospital.controller;
 import com.juzipi.commonutil.tool.Result;
 import com.juzipi.hospital.service.DepartmentService;
 import com.juzipi.hospital.service.HospitalService;
+import com.juzipi.hospital.service.ScheduleService;
 import com.juzipi.inter.model.mode.PageBody;
 import com.juzipi.inter.vo.hospital.HospitalSelectVo;
 import com.juzipi.serviceutil.core.BaseController;
 import io.swagger.annotations.ApiOperation;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +26,8 @@ public class HospitalApiController extends BaseController {
     private HospitalService hospitalService;
     @Autowired
     private DepartmentService departmentService;
+    @Autowired
+    private ScheduleService scheduleService;
 
 
     @ApiOperation("查询医院列表")
@@ -53,5 +57,27 @@ public class HospitalApiController extends BaseController {
         return judgmentResult(hospitalService.getReservation(hpCode));
     }
 
+
+    @ApiOperation("获取可预约的排班数据")
+    @GetMapping("auth/getBookingScheduleRule/{pageNum}/{pageSize}/{hpCode}/{depCode}")
+    public Result getBookingSchedulePage(
+            @PathVariable("pageNum") Integer pageNum,
+            @PathVariable("pageSize") Integer pageSize,
+            @PathVariable("hpCode") String hpCode,
+            @PathVariable("depCode") String depCode,
+    ){
+        scheduleService.getBookingSchedulePage(pageNum,pageSize,hpCode,depCode)
+    }
+
+
+    @ApiOperation("获取排班数据")
+    @GetMapping("auth/findScheduleList/{hpCode}/{depCode}/{workDate}")
+    public Result getScheduleList(
+            @PathVariable("hpCode") String hpCode,
+            @PathVariable("depCode") String depCode,
+            @PathVariable("workDate") String workDate
+            ){
+        scheduleService.getScheduleList(hpCode,depCode,workDate);
+    }
 
 }

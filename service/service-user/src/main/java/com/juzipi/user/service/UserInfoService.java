@@ -33,4 +33,5 @@ public interface UserInfoService extends IService<UserInfo> {
 
     Map<String,Object> showUser(Long userId);
 
+    Integer approval(Long userId, Integer authStatus);
 }

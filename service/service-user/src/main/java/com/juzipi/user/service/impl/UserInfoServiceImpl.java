@@ -10,11 +10,13 @@ import com.juzipi.commonutil.util.JwtUtils;
 import com.juzipi.commonutil.util.StringUtils;
 import com.juzipi.commonutil.util.conversion.UserInfoAuthStatusConversion;
 import com.juzipi.inter.model.mode.LoginBody;
+import com.juzipi.inter.model.pojo.user.Patient;
 import com.juzipi.inter.model.pojo.user.UserInfo;
 import com.juzipi.inter.vo.user.UserAuthVo;
 import com.juzipi.inter.vo.user.UserInfoSelectVo;
 import com.juzipi.serviceutil.util.RedisUtils;
 import com.juzipi.user.mapper.UserInfoMapper;
+import com.juzipi.user.service.PatientService;
 import com.juzipi.user.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,6 +37,8 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
 
     @Autowired
     private RedisUtils redisUtils;
+    @Autowired
+    private PatientService patientService;
 
     @Override
     public HashMap<String, Object> login(LoginBody loginBody) {
@@ -155,7 +159,26 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
 
     @Override
     public Map<String, Object> showUser(Long userId) {
-        HashMap<Object, Object> hashMap = new HashMap<>();
+        HashMap<String, Object> hashMap = new HashMap<>();
+        //根据userId查询用户信息
+        UserInfo userInfo = this.setUserInfo(baseMapper.selectById(userId));
+        hashMap.put("userInfo",userInfo);
+        //根据userId查询就诊人信息
+        Patient patients = patientService.getPatientById(userId);
+        hashMap.put("patients",patients);
+        return hashMap;
+    }
+
+
+
+    @Override
+    public Integer approval(Long userId, Integer authStatus) {
+        if (authStatus == 2 || authStatus == -1){
+            UserInfo userInfo = baseMapper.selectById(userId);
+            userInfo.setAuthStatus(authStatus);
+            return baseMapper.updateById(userInfo);
+        }
+        return 0;
     }
 
 
