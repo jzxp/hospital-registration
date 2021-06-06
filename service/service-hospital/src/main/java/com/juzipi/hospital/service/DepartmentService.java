@@ -47,4 +47,6 @@ public interface DepartmentService {
 
 
     Department getDepartment(String depCode);
+
+    Department getDepartment(String hpCode, String depCode);
 }

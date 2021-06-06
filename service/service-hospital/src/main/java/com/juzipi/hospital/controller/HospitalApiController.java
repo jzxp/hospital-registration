@@ -64,9 +64,9 @@ public class HospitalApiController extends BaseController {
             @PathVariable("pageNum") Integer pageNum,
             @PathVariable("pageSize") Integer pageSize,
             @PathVariable("hpCode") String hpCode,
-            @PathVariable("depCode") String depCode,
+            @PathVariable("depCode") String depCode
     ){
-        scheduleService.getBookingSchedulePage(pageNum,pageSize,hpCode,depCode)
+        return judgmentResult(scheduleService.getBookingSchedulePage(pageNum,pageSize,hpCode,depCode));
     }
 
 
@@ -77,7 +77,18 @@ public class HospitalApiController extends BaseController {
             @PathVariable("depCode") String depCode,
             @PathVariable("workDate") String workDate
             ){
-        scheduleService.getScheduleList(hpCode,depCode,workDate);
+        return judgmentResult(scheduleService.getScheduleDetails(hpCode,depCode,workDate));
     }
+
+
+
+    @ApiOperation("根据排班id获取排班数据")
+    @GetMapping("getSchedule/{scheduleId}")
+    public Result getSchedule(@PathVariable String scheduleId){
+        return judgmentResult(scheduleService.getScheduleById(scheduleId));
+    }
+
+
+
 
 }

@@ -20,4 +20,6 @@ public interface ScheduleRepository extends MongoRepository<Schedule, String> {
 
     List<Schedule> queryByHpCodeAndDepCodeAndWorkDate(String hpCode,String depCode, DateTime workDate);
 
+    Schedule queryScheduleById(String scheduleId);
+
 }

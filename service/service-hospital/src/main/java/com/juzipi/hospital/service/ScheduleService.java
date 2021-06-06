@@ -29,4 +29,6 @@ public interface ScheduleService {
     List<Schedule> getScheduleDetails(String hpCode, String depCode, String workDate);
 
     Map<String, Object> getBookingSchedulePage(Integer pageNum, Integer pageSize, String hpCode, String depCode);
+
+    Map<String,Object> getScheduleById(String scheduleId);
 }

@@ -11,9 +11,11 @@ import com.juzipi.hospital.service.DepartmentService;
 import com.juzipi.hospital.service.HospitalService;
 import com.juzipi.hospital.service.ScheduleService;
 import com.juzipi.inter.model.pojo.hospital.BookingRule;
+import com.juzipi.inter.model.pojo.hospital.Department;
 import com.juzipi.inter.model.pojo.hospital.Hospital;
 import com.juzipi.inter.model.pojo.hospital.Schedule;
 import com.juzipi.inter.vo.hospital.BookingScheduleRuleVo;
+import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -160,7 +162,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public Map<String, Object> getBookingSchedulePage(Integer pageNum, Integer pageSize, String hpCode, String depCode) {
-        HashMap<String, Object> hashMap = new HashMap<>();
+        HashMap<String, Object> resultMap = new HashMap<>();
         //获取预约规则
         //根据医院编号获取预约规则
         Hospital hospital = hospitalService.getHospitalById(hpCode);
@@ -183,21 +185,67 @@ public class ScheduleServiceImpl implements ScheduleService {
         List<BookingScheduleRuleVo> scheduleVoList = aggregationResults.getMappedResults();
 
         //合并数据返回map
-        Map<Date, Object> map = new HashMap<>();
+        Map<Date, BookingScheduleRuleVo> map = new HashMap<>();
         if (StringUtils.isNotEmpty(map)){
             //转换成map集合，key是workDate，value是 BookingScheduleRuleVo对象
             map = scheduleVoList.stream().collect(Collectors.toMap(BookingScheduleRuleVo::getWorkDate, BookingScheduleRuleVO -> BookingScheduleRuleVO));
         }
         //获取可预约的排班规则
         ArrayList<BookingScheduleRuleVo> bookingScheduleRuleVos = new ArrayList<>();
-        for (int i = 0; i < dateList.size(); i++) {
+        for (int i = 0, len = dateList.size(); i < len; i++) {
             Date date = dateList.get(i);
             //根据key获取value值
-
+            BookingScheduleRuleVo bookingScheduleRuleVo = map.get(date);
+            //如果没有排班医生
+            if (StringUtils.isEmpty(bookingScheduleRuleVos)){
+                bookingScheduleRuleVo = new BookingScheduleRuleVo();
+                //就诊人数
+                bookingScheduleRuleVo.setDocCount(0);
+                //剩余预约数,-1为无号
+                bookingScheduleRuleVo.setAvailableNumber(-1);
+            }
+            bookingScheduleRuleVo.setWorkDate(date);
+            bookingScheduleRuleVo.setWorkDateMd(date);
+            String dateToWeek = this.dateToWeek(new DateTime(date).toString());
+            bookingScheduleRuleVo.setDayOfWeek(dateToWeek);
+            //最后一页最后一条记录为即将预约，0正常，1即将放号，-1已停止挂号
+            if (i == len - 1 && pageNum == pageInfo.getPages()){
+                bookingScheduleRuleVo.setStatus(1);
+            }else {
+                bookingScheduleRuleVo.setStatus(0);
+            }
+            if (i == 0 && pageNum == 1){
+                DateTime stopTime = DateUtils.getDatetime(new Date(), bookingRule.getStopTime());
+                if (stopTime.isBeforeNow()){
+                    bookingScheduleRuleVo.setStatus(-1);
+                }
+            }
+            bookingScheduleRuleVos.add(bookingScheduleRuleVo);
         }
-
+        //可预约日期规则数据
+        resultMap.put("bookingScheduleList",bookingScheduleRuleVos);
+        resultMap.put("total",pageInfo.getTotal());
+        //其他基础数据
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("hpName",hospitalService.getHospitalById(hpCode).getHpName());
+        Department department = departmentService.getDepartment(hpCode,depCode);
+        hashMap.put("bigName",department.getBigName());
+        hashMap.put("depName",department.getDepName());
+        hashMap.put("workDateString",new DateTime().toString("yyyy年MM月"));
+        hashMap.put("releaseTime",bookingRule.getReleaseTime());
+        hashMap.put("stopTime",bookingRule.getStopTime());
+        resultMap.put("baseMap",hashMap);
+        return resultMap;
     }
 
+
+
+    @Override
+    public Map<String,Object> getScheduleById(String scheduleId) {
+        Schedule schedule = scheduleRepository.queryScheduleById(scheduleId);
+        Map<String, Object> scheduleInfo = this.setScheduleInfo(schedule);
+        return scheduleInfo;
+    }
 
 
     private com.baomidou.mybatisplus.extension.plugins.pagination.Page<Date> getDatePage(Integer pageNum, Integer pageSize, BookingRule bookingRule) {
