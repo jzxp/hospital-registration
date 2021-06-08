@@ -4,10 +4,13 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.juzipi.commonutil.exception.BaseException;
+import com.juzipi.commonutil.util.StringUtils;
 import com.juzipi.hospital.mapper.HospitalSetMapper;
 import com.juzipi.hospital.service.HospitalSetService;
 import com.juzipi.inter.model.mode.PageBody;
 import com.juzipi.inter.model.pojo.hospital.HospitalSet;
+import com.juzipi.inter.model.pojo.order.SignInfoVo;
 import org.springframework.stereotype.Service;
 
 /**
@@ -50,6 +53,20 @@ public class HospitalSetServiceImpl extends ServiceImpl<HospitalSetMapper, Hospi
     @Override
     public Integer lockHospitalSet(Long id,Integer status) {
         return getBaseMapper().lockHospitalSet(id,status);
+    }
+
+
+
+    @Override
+    public SignInfoVo getSignInfoVo(String hpCode) {
+        HospitalSet hospitalSet = baseMapper.selectOne(new QueryWrapper<HospitalSet>().lambda().eq(HospitalSet::getHpCode, hpCode));
+        if (StringUtils.isNull(hospitalSet)){
+            throw new BaseException(this.getClass().getName(),500,"签名校验失败");
+        }
+        SignInfoVo signInfoVo = new SignInfoVo();
+        signInfoVo.setApiUrl(hospitalSet.getApiUrl());
+        signInfoVo.setSignKey(hospitalSet.getSignKey());
+        return signInfoVo;
     }
 
 

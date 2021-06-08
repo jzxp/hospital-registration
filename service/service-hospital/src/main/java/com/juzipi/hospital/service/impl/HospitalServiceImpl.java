@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.juzipi.client.dict.DictFeignClient;
+import com.juzipi.dictionary.client.DictFeignClient;
 import com.juzipi.commonutil.constant.ConstantsMp;
 import com.juzipi.commonutil.constant.MongoConstants;
 import com.juzipi.commonutil.tool.Result;

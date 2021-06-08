@@ -34,10 +34,11 @@ public class BaseException extends RuntimeException {
         this.message = message;
     }
 
-    public BaseException(String module, Integer code, Object args) {
+
+    public BaseException(String module, Integer code, String message) {
         this.module = module;
         this.code = code;
-        this.args = args;
+        this.message = message;
     }
 
     public BaseException(String module, String message) {

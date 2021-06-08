@@ -13,6 +13,8 @@
     <packaging>pom</packaging>
     <modules>
         <module>service-dictionary-client</module>
+        <module>service-user-client</module>
+        <module>service-hospital-client</module>
     </modules>
 
     <properties>

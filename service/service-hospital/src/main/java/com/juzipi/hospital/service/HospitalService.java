@@ -46,7 +46,6 @@ public interface HospitalService {
 
     Hospital getHospitalByHpCode(String hpCode);
 
-
     List<Hospital> queryHospitalByLikeHpName(String hpName);
 
     Map<String, Object> getReservation(String hpCode);

@@ -56,10 +56,9 @@ public class Schedule extends BaseMongoEntity {
     @ApiModelProperty(value = "剩余预约数")
     private Integer availableNumber;
 
-
     @ApiModelProperty(value = "挂号费")
     //BigDecimal 表示一个任意大小且精度完全准确的浮点数。
-    private String amount;
+    private BigDecimal amount;
 
     @ApiModelProperty(value = "排班状态（-1：停诊，0:停约，1：可约）")
     private Integer status;

@@ -60,4 +60,10 @@ public class PatientApiController extends BaseController {
         return judgmentResult(patientService.removeById(id));
     }
 
+    @ApiOperation("根据id获取就诊人信息")
+    @GetMapping("inner/get/{id}")
+    public Result getPatientOrder(@PathVariable Long id){
+        return judgmentResult(patientService.getPatientById(id));
+    }
+
 }

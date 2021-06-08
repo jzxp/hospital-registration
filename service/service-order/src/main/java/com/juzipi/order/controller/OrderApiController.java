@@ -18,15 +18,16 @@ public class OrderApiController extends BaseController {
 
 
     @Autowired
+    private OrderService orderService;
 
     @ApiOperation("保存订单返回订单id")
     @GetMapping("auth/submitOrder/{scheduleId}/{patientId}")
-    public Result saveOrder(@PathV
-    private OrderService orderService;
-
-ariable String scheduleId,@PathVariable Long patientId){
-        orderService.saveOrder(scheduleId,patientId);
+    public Result saveOrder(@PathVariable String scheduleId,@PathVariable Long patientId){
+        return judgmentResult(orderService.saveOrder(scheduleId,patientId));
     }
+
+
+
 
 
 }

@@ -2,7 +2,7 @@ package com.juzipi.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.juzipi.client.dict.DictFeignClient;
+import com.juzipi.dictionary.client.DictFeignClient;
 import com.juzipi.commonutil.tool.Result;
 import com.juzipi.inter.model.pojo.user.Patient;
 import com.juzipi.user.mapper.PatientMapper;

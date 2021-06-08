@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.juzipi.inter.model.mode.PageBody;
 import com.juzipi.inter.model.pojo.hospital.HospitalSet;
+import com.juzipi.inter.model.pojo.order.SignInfoVo;
 
 /**
  * @Author juzipi
@@ -33,4 +34,8 @@ public interface HospitalSetService extends IService<HospitalSet> {
     Page<?> queryHospitalPage(PageBody pageBody);
 
     Integer lockHospitalSet(Long id,Integer status);
+
+    SignInfoVo getSignInfoVo(String hpCode);
+
+
 }

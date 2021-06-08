@@ -3,6 +3,7 @@ package com.juzipi.hospital.controller;
 import com.juzipi.commonutil.tool.Result;
 import com.juzipi.hospital.service.DepartmentService;
 import com.juzipi.hospital.service.HospitalService;
+import com.juzipi.hospital.service.HospitalSetService;
 import com.juzipi.hospital.service.ScheduleService;
 import com.juzipi.inter.model.mode.PageBody;
 import com.juzipi.inter.vo.hospital.HospitalSelectVo;
@@ -28,6 +29,8 @@ public class HospitalApiController extends BaseController {
     private DepartmentService departmentService;
     @Autowired
     private ScheduleService scheduleService;
+    @Autowired
+    private HospitalSetService hospitalSetService;
 
 
     @ApiOperation("查询医院列表")
@@ -89,6 +92,17 @@ public class HospitalApiController extends BaseController {
     }
 
 
+    @ApiOperation("根据排班id获取预约下单数据")
+    @GetMapping("inner/getScheduleOrderVo/{scheduleId}")
+    public Result getScheduleOrderVo(@PathVariable String scheduleId){
+        return judgmentResult(scheduleService.getScheduleOrderVo(scheduleId));
+    }
 
+
+    @ApiOperation("根据医院编号获取签名信息")
+    @GetMapping("inner/getSignInfoVo/{hpCode}")
+    public Result getSognInfoVo(@PathVariable String hpCode){
+        return judgmentResult(hospitalSetService.getSignInfoVo(hpCode));
+    }
 
 }

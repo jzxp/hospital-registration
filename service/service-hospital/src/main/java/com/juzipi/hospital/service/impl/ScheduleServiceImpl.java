@@ -6,6 +6,7 @@ import com.juzipi.commonutil.constant.MongoConstants;
 import com.juzipi.commonutil.exception.BaseException;
 import com.juzipi.commonutil.util.DateUtils;
 import com.juzipi.commonutil.util.StringUtils;
+import com.juzipi.hospital.mapper.ScheduleMapper;
 import com.juzipi.hospital.repository.ScheduleRepository;
 import com.juzipi.hospital.service.DepartmentService;
 import com.juzipi.hospital.service.HospitalService;
@@ -15,7 +16,7 @@ import com.juzipi.inter.model.pojo.hospital.Department;
 import com.juzipi.inter.model.pojo.hospital.Hospital;
 import com.juzipi.inter.model.pojo.hospital.Schedule;
 import com.juzipi.inter.vo.hospital.BookingScheduleRuleVo;
-import com.mysql.cj.x.protobuf.MysqlxDatatypes;
+import com.juzipi.inter.vo.hospital.ScheduleOrderVo;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
@@ -47,6 +48,8 @@ public class ScheduleServiceImpl implements ScheduleService {
     private HospitalService hospitalService;
     @Autowired
     private DepartmentService departmentService;
+    @Autowired
+    private ScheduleMapper scheduleMapper;
 
 
     /**
@@ -241,10 +244,55 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 
     @Override
-    public Map<String,Object> getScheduleById(String scheduleId) {
+    public Schedule getScheduleById(String scheduleId) {
         Schedule schedule = scheduleRepository.queryScheduleById(scheduleId);
-        Map<String, Object> scheduleInfo = this.setScheduleInfo(schedule);
+        Schedule scheduleInfo = this.setScheduleInfo(schedule);
         return scheduleInfo;
+    }
+
+
+
+    @Override
+    public ScheduleOrderVo getScheduleOrderVo(String scheduleId) {
+        ScheduleOrderVo scheduleOrderVo = new ScheduleOrderVo();
+        Schedule schedule = scheduleMapper.selectById(scheduleId);
+        if (StringUtils.isNull(scheduleId)){
+            throw new BaseException(this.getClass().getName(),500,"scheduleId为空");
+        }
+        Hospital hospital = hospitalService.getHospitalByHpCode(schedule.getHpCode());
+        if (StringUtils.isNull(hospital)){
+            throw new BaseException(this.getClass().getName(),500,schedule.getHpCode(),"根据"+ schedule.getHpCode()+"查询hospital失败");
+        }
+        BookingRule bookingRule = hospital.getBookingRule();
+        if (StringUtils.isNull(bookingRule)){
+            throw new BaseException(this.getClass().getName(),500,"获取"+bookingRule+"失败");
+        }
+        scheduleOrderVo.setHpCode(schedule.getHpCode());
+        scheduleOrderVo.setHpName(hospitalService.getHospitalByHpCode(schedule.getHpCode()).getHpName());
+        scheduleOrderVo.setDepCode(schedule.getDepCode());
+        scheduleOrderVo.setDepName(departmentService.getDepartment(schedule.getHpCode(), schedule.getDepCode()).getDepName());
+        scheduleOrderVo.setHpScheduleId(schedule.getHpScheduleId());
+        scheduleOrderVo.setAvailableNumber(schedule.getAvailableNumber());
+        scheduleOrderVo.setTitle(schedule.getTitle());
+        scheduleOrderVo.setReserveDate(schedule.getWorkDate());
+        scheduleOrderVo.setReserveTime(schedule.getWorkTime());
+        scheduleOrderVo.setAmount(schedule.getAmount());
+
+        //退号截止天数（如：就诊前一天为-1，当天为0）
+        Integer quitDay = bookingRule.getQuitDay();
+        DateTime quitTime = DateUtils.getDatetime(new DateTime(schedule.getWorkDate()).plusDays(quitDay).toDate(), bookingRule.getQuitTime());
+        scheduleOrderVo.setQuitTime(quitTime.toDate());
+        //预约开始时间
+        DateTime startTime = DateUtils.getDatetime(new Date(), bookingRule.getReleaseTime());
+        scheduleOrderVo.setStartTime(startTime.toDate());
+        //预约截止时间
+        DateTime endTime = DateUtils.getDatetime(new DateTime().plusDays(bookingRule.getCycle()).toDate(), bookingRule.getStopTime());
+        scheduleOrderVo.setEndTime(endTime.toDate());
+
+        //当天停止挂号时间
+        DateTime stopTime = DateUtils.getDatetime(new Date(), bookingRule.getStopTime());
+        scheduleOrderVo.setEndTime(stopTime.toDate());
+        return scheduleOrderVo;
     }
 
 
@@ -335,12 +383,11 @@ public class ScheduleServiceImpl implements ScheduleService {
      * @param schedule
      * @return
      */
-    private Map<String, Object> setScheduleInfo(Schedule schedule){
-        Map<String, Object> scheduleParam = schedule.getParam();
-        scheduleParam.put("hpName",hospitalService.getHospitalByHpCode(schedule.getHpCode()).getHpName());
-        scheduleParam.put("depName",departmentService.getDepartment(schedule.getDepCode()).getDepName());
-        scheduleParam.put("dayOfWeek",this.dateToWeek(schedule.getWorkDate().toString()));
-        return scheduleParam;
+    private Schedule setScheduleInfo(Schedule schedule){
+        schedule.getParam().put("hpName",hospitalService.getHospitalByHpCode(schedule.getHpCode()).getHpName());
+        schedule.getParam().put("depName",departmentService.getDepartment(schedule.getDepCode()).getDepName());
+        schedule.getParam().put("dayOfWeek",this.dateToWeek(schedule.getWorkDate().toString()));
+        return schedule;
     }
 
 }

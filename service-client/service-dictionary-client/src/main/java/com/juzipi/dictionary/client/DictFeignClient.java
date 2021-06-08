@@ -1,4 +1,4 @@
-package com.juzipi.client.dict;
+package com.juzipi.dictionary.client;
 
 import com.juzipi.commonutil.tool.Result;
 import org.springframework.cloud.openfeign.FeignClient;
