@@ -13,7 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
  * @Info 启动类
  */
 @SpringBootApplication
-@MapperScan("com.juzipi.hospital.mapper")
+@MapperScan(basePackages = "com.juzipi.hospital.mapper")
 //跨模块配置文件不生效,扫描所有包
 @ComponentScan("com.juzipi")
 @EnableDiscoveryClient

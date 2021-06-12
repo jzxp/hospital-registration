@@ -38,4 +38,7 @@ public interface ScheduleService {
 
     ScheduleOrderVo getScheduleOrderVo(String scheduleId);
 
+
+    Boolean updateSchedule(Schedule schedule);
+
 }

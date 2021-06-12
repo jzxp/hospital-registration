@@ -296,6 +296,17 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
 
+    @Override
+    public Boolean updateSchedule(Schedule schedule) {
+        schedule.setUpdateTime(new Date());
+        Schedule save = scheduleRepository.save(schedule);
+        if (StringUtils.isNotNull(scheduleRepository.queryScheduleById(save.getId()))){
+            return true;
+        }
+        return false;
+    }
+
+
     private com.baomidou.mybatisplus.extension.plugins.pagination.Page<Date> getDatePage(Integer pageNum, Integer pageSize, BookingRule bookingRule) {
         //获取当天放号时间
         DateTime datetime = DateUtils.getDatetime(new Date(), bookingRule.getReleaseTime());

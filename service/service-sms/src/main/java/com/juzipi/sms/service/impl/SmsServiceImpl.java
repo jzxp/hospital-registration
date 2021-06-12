@@ -8,6 +8,8 @@ import com.aliyuncs.IAcsClient;
 import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.http.MethodType;
 import com.aliyuncs.profile.DefaultProfile;
+import com.juzipi.commonutil.util.StringUtils;
+import com.juzipi.inter.vo.sms.SmsVo;
 import com.juzipi.serviceutil.properties.SmsProperties;
 import com.juzipi.sms.service.SmsService;
 import org.springframework.stereotype.Service;
@@ -57,6 +59,16 @@ public class SmsServiceImpl implements SmsService {
             return response.getHttpResponse().isSuccess();
         } catch (ClientException e) {
             e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    @Override
+    public Boolean sendMQ(SmsVo smsVo) {
+        if (StringUtils.isNotEmpty(smsVo.getPhone())){
+            String code = (String)smsVo.getParam().get("code");
+            return this.sendCode(smsVo.getPhone(), code);
         }
         return false;
     }
