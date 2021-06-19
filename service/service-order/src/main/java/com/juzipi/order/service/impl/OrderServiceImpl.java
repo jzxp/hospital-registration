@@ -2,15 +2,24 @@ package com.juzipi.order.service.impl;
 
 import com.alibaba.excel.event.Order;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.juzipi.commonutil.exception.BaseException;
+import com.juzipi.commonutil.util.conversion.OrderInfoStatusConversion;
 import com.juzipi.hospital.client.HospitalFeignClient;
 import com.juzipi.inter.model.pojo.order.OrderInfo;
 import com.juzipi.inter.model.pojo.order.SignInfoVo;
 import com.juzipi.inter.model.pojo.user.Patient;
 import com.juzipi.inter.vo.hospital.ScheduleOrderVo;
+import com.juzipi.inter.vo.order.OrderMqVo;
+import com.juzipi.inter.vo.order.OrderSelectVo;
+import com.juzipi.inter.vo.sms.SmsVo;
 import com.juzipi.order.mapper.OrderMapper;
 import com.juzipi.order.service.OrderService;
+import com.juzipi.rabbit.constant.MqConstants;
+import com.juzipi.rabbit.service.RabbitService;
 import com.juzipi.serviceutil.util.HttpRequestHelper;
 import com.juzipi.user.client.PatientFeginClient;
 import io.swagger.annotations.ApiOperation;
@@ -34,6 +43,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderInfo> implem
     private PatientFeginClient patientFeginClient;
     @Autowired
     private HospitalFeignClient hospitalFeignClient;
+    @Autowired
+    private RabbitService rabbitService;
 
 
     @ApiOperation("保存订单")
@@ -110,11 +121,64 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, OrderInfo> implem
             //排班剩余预约数
             Integer availableNumber = jsonObject.getInteger("availableNumber");
             //发送rabbitMQ了,号源更新短信通知
+            OrderMqVo orderMqVo = new OrderMqVo();
+            orderMqVo.setScheduleId(scheduleId);
+            orderMqVo.setReservedNumber(reservedNumber);
+            orderMqVo.setAvailableNumber(availableNumber);
+            //短信提示
+            SmsVo smsVo = new SmsVo();
+            smsVo.setPhone(orderInfo.getPatientPhone());
+            String reserveDate = new DateTime(orderInfo.getReserveDate()).toString("yyyy-MM-dd") + (orderInfo.getReserveTime() == 0 ? "上午" : "下午");
+            HashMap<String, Object> hashMap = new HashMap<>();
+            hashMap.put("title",orderInfo.getHpName()+"|"+orderInfo.getDepName()+"|"+orderInfo.getTitle());
+            hashMap.put("amount",orderInfo.getAmount());
+            hashMap.put("reserveDate",reserveDate);
+            hashMap.put("name",orderInfo.getPatientName());
+            hashMap.put("quitTime",new DateTime(orderInfo.getQuitTime()).toString("yyyy-MM-dd HH:mm"));
+            smsVo.setParam(hashMap);
+            orderMqVo.setSmsVo(smsVo);
+            //发送
+            rabbitService.sendMessage(MqConstants.EXCHANGE_DIRECT_ORDER, MqConstants.ROUTING_ORDER,orderMqVo);
 
         }else {
             throw new BaseException(this.getClass().getName(),500,"保存订单信息失败啦");
         }
         return orderInfo.getId();
+    }
+
+
+    @Override
+    public OrderInfo getOrder(String orderId) {
+        OrderInfo orderInfo = baseMapper.selectById(orderId);
+        orderInfo.getParam().put("orderStatusString", OrderInfoStatusConversion.stateTransition(orderInfo.getOrderStatus()));
+        return orderInfo;
+    }
+
+
+    @Override
+    public void getPage(Long pageNum, Long pageSize, OrderSelectVo orderSelectVo) {
+        //医院名称
+        String keyword = orderSelectVo.getKeyword();
+        //就诊人名称
+        Long patientId = orderSelectVo.getPatientId();
+        //订单状态
+        String orderStatus = orderSelectVo.getOrderStatus();
+        //安排时间
+        String reserveDate = orderSelectVo.getReserveDate();
+        //开始时间
+        String createTimeBegin = orderSelectVo.getCreateTimeBegin();
+        //结束时间
+        String createTimeEnd = orderSelectVo.getCreateTimeEnd();
+
+        LambdaQueryWrapper<OrderInfo> wrapper = new QueryWrapper<OrderInfo>().lambda().like(OrderInfo::getHpName, keyword)
+                .eq(OrderInfo::getPatientId, patientId)
+                .eq(OrderInfo::getOrderStatus, orderStatus)
+                .eq(OrderInfo::getReserveDate, reserveDate)
+                .eq(OrderInfo::getCreateTime, createTimeBegin)
+                .eq(OrderInfo::getCreateTime, createTimeEnd);
+        Page<OrderInfo> pageInfo = baseMapper.selectPage(new Page<OrderInfo>(), wrapper);
+
+
     }
 
 

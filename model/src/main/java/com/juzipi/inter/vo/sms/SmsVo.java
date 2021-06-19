@@ -12,9 +12,12 @@ import java.util.Map;
 @Data
 public class SmsVo {
 
+
     private String phone;
 
+
     private String templateCode;
+
 
     private Map<String,Object> param;
 

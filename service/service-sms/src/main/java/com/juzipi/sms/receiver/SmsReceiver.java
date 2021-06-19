@@ -26,6 +26,7 @@ public class SmsReceiver {
     private SmsService smsService;
 
 
+
     @RabbitListener(bindings = @QueueBinding(value = @Queue(value = MqConstants.QUEUE_MSM_ITEM, durable = "true"),
     exchange = @Exchange(value = MqConstants.EXCHANGE_DIRECT_MSM),
             key = {MqConstants.ROUTING_MSM_ITEM}
@@ -33,5 +34,6 @@ public class SmsReceiver {
     public void send(SmsVo smsVo, Message message, Channel channel){
         smsService.sendMQ(smsVo);
     }
+
 
 }

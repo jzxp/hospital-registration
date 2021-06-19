@@ -15,6 +15,7 @@ import com.juzipi.sms.service.SmsService;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author juzipi
@@ -68,7 +69,42 @@ public class SmsServiceImpl implements SmsService {
     public Boolean sendMQ(SmsVo smsVo) {
         if (StringUtils.isNotEmpty(smsVo.getPhone())){
             String code = (String)smsVo.getParam().get("code");
-            return this.sendCode(smsVo.getPhone(), code);
+            return this.sendCode(smsVo.getPhone(), smsVo.getParam());
+        }
+        return false;
+    }
+
+
+    private Boolean sendCode(String phoneNumber, Map<String,Object> param) {
+        DefaultProfile profile = DefaultProfile.
+                getProfile(
+                        "default",
+                        SmsProperties.ACCESS_KEY_ID,
+                        SmsProperties.SECRET);
+        IAcsClient client = new DefaultAcsClient(profile);
+        CommonRequest request = new CommonRequest();
+        //request.setProtocol(ProtocolType.HTTPS);
+        request.setMethod(MethodType.POST);
+        request.setDomain("dysmsapi.aliyuncs.com");
+        request.setVersion("2017-05-25");
+        request.setAction("SendSms");
+
+        //手机号
+        request.putQueryParameter("PhoneNumbers", phoneNumber);
+        //签名名称
+        request.putQueryParameter("SignName", "jzpx的学习记录网站");
+        //模板code
+        request.putQueryParameter("TemplateCode", "SMS_217416866");
+
+        request.putQueryParameter("TemplateParam", JSONObject.toJSONString(param));
+
+        //调用方法进行短信发送
+        try {
+            CommonResponse response = client.getCommonResponse(request);
+            System.out.println(response.getData());
+            return response.getHttpResponse().isSuccess();
+        } catch (ClientException e) {
+            e.printStackTrace();
         }
         return false;
     }
